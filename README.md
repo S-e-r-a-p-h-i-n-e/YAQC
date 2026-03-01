@@ -19,17 +19,6 @@ Powered by Hyprland and Quickshell, **NeKoRoSHELL DLux** aims strives to achieve
 
 **This repo only contain the files for `.config/quickshell/`. If you want the actual dotfiles, [check them out here](https://github.io/NeKoRoSYS/NeKoRoSHELL-DLux-Shell)**
 <br>
-<br>
-
-<div align="center">
- 
-| 📌 **Table of Contents** |
-| :---: |
-| 🚀 [Features](#features) |
-| 🔗 [Dependencies](#dependencies) |
-
-</div>
-<br>
 
 ### Roadmap
 
