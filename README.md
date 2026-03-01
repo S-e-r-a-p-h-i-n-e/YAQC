@@ -81,6 +81,7 @@ NeKoRoSHELL DLUX is currently being developed by one person (*cough* [CONTRIBUTI
 | 📋 **TODO** | **STATUS** |
 | :---: | :---: |
 | Improve base theme | 🛠 |
+| Port all necessary bash scripts into native QML modules/functionality | ⏳ |
 
 </div>
 <br>
