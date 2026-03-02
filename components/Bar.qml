@@ -15,7 +15,6 @@ Scope {
     property string font: "JetBrainsMono Nerd Font"
     property real fontSize
     readonly property bool isHorizontal: location === "top" || location === "bottom"
-    readonly property bool isVertical: location === "left" || location === "right"
 
     signal toggleSettingsPanel()
 
@@ -35,11 +34,11 @@ Scope {
             }
 
             implicitHeight: navbar.isHorizontal ? navbar.barSize : undefined
-            implicitWidth: navbar.isVertical ? navbar.barSize : undefined
+            implicitWidth: navbar.isHorizontal ? undefined : navbar.barSize
 
            Workspaces {
                 x: navbar.isHorizontal ? 35 : (parent.width - width) / 2
-                y: navbar.isVertical ? 35 : (parent.height - height) / 2
+                y: navbar.isHorizontal ? (parent.height - height) / 2 : 35
             }
 
             Clock {
@@ -51,7 +50,7 @@ Scope {
 
             ButtonsRow { 
                 x: navbar.isHorizontal ? parent.width - width - 35 : (parent.width - width) / 2
-                y: navbar.isVertical ? parent.height - height - 35 : (parent.height - height) / 2
+                y: navbar.isHorizontal ? (parent.height - height) / 2 : parent.height - height - 35
                 onToggleSettingsPanel: navbar.toggleSettingsPanel()
             }
         }
