@@ -5,6 +5,7 @@ import "../shared"
 Scope {
     id: root
     property string navbarLocation: "top"
+    property bool enableBorders: true
     property real navbarSize: 40
     property real fontSize: 12
     property real borderWidth: 10
@@ -13,7 +14,7 @@ Scope {
     property bool isPanelOpen: false
 
     ScreenBorder {
-        enabled: true
+        enabled: enableBorders
         location: root.navbarLocation
         borderColor: Colors.background
         borderWidth: root.borderWidth
@@ -31,12 +32,16 @@ Scope {
         }
     }
 
-    PositionPanel {
+    SettingsPanel {
         showPanel: root.isPanelOpen
+        bordersEnabled: root.enableBorders
         
         onLocationSelected: (newLocation) => {
             root.navbarLocation = newLocation
-            root.isPanelOpen = false 
+        }
+
+        onBordersToggled: (state) => {
+            root.enableBorders = state
         }
     }
 }

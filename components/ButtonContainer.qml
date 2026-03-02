@@ -1,10 +1,9 @@
 import QtQuick
+import "../shared"
 
 Rectangle {
     id: root
     signal buttonClicked()
-
-    property string style: circle
     property string labelText
     property string labelFont
     property real buttonSize: parent.height / 1.65
@@ -14,7 +13,7 @@ Rectangle {
     width: height
     radius: height / 2
     color: buttonColor
-    
+
     Text {
         id: label
         anchors.centerIn: parent
@@ -24,10 +23,7 @@ Rectangle {
         font.pixelSize: parent.height / 1.65
     }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: root.buttonClicked()
+    Button {
+        color: root.buttonColor
     }
 }
