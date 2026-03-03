@@ -1,6 +1,4 @@
 {
-  "config": {
-    "navbarLocation": "left",
-    "enableBorders": true
-  }
+  "navbarLocation": "right",
+  "enableBorders": false
 }
