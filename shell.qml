@@ -1,7 +1,8 @@
 import Quickshell
 import QtQuick
-import "./modules"
+import qs.modules
 
 Scope {
+    Wallpaper {}
     UIManager {}
 }

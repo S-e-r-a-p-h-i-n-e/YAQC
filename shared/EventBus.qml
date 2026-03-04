@@ -4,7 +4,7 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    signal toggleSettingsPanel()
+    signal togglePanel(string panelId)
     signal changeLocation(string newLocation)
     signal toggleBorders(bool state)
 }

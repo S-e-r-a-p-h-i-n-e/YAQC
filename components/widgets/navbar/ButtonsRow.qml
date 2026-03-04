@@ -32,7 +32,7 @@ Grid {
         labelFont: navbar.font
         buttonSize: (root.isSide ? parent.parent.width : parent.parent.height) / 1.65
         buttonColor: Colors.color7
-        onButtonClicked: EventBus.toggleSettingsPanel()
+        onButtonClicked: EventBus.togglePanel("theming")
     }
 
     Button {

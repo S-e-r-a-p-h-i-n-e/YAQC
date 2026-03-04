@@ -1,6 +1,7 @@
 import Quickshell
 import QtQuick
 import qs.components
+import qs.components.widgets
 import qs.shared
 
 Scope {
@@ -11,13 +12,17 @@ Scope {
     property real borderWidth: 10
     property real cornerRadius: 20
 
-    property bool isPanelOpen: false
+    property string activePanel: ""
 
     Connections {
         target: EventBus
         
-        function onToggleSettingsPanel() {
-            root.isPanelOpen = !root.isPanelOpen
+        function onTogglePanel(panelId) {
+            if (root.activePanel === panelId) {
+                root.activePanel = ""
+            } else {
+                root.activePanel = panelId
+            }
         }
         
         function onChangeLocation(newLocation) {
@@ -28,8 +33,6 @@ Scope {
             Config.saveSetting("enableBorders", state)
         }
     }
-
-    Wallpaper { }
 
     ScreenBorder {
         enabled: Config.enableBorders 
@@ -46,8 +49,14 @@ Scope {
         }
     }
 
-    SettingsPanel {
-        showPanel: root.isPanelOpen
+    Theming {
+        showPanel: root.activePanel === "theming"
         bordersEnabled: Config.enableBorders
+        navbarOffset: root.navbarSize
+    }
+
+    Dashboard {
+        showPanel: root.activePanel === "dashboard"
+        navbarOffset: root.navbarSize
     }
 }
