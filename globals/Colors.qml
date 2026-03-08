@@ -33,34 +33,31 @@ Singleton {
 
   FileView {
     id: themeFile
-    path: Quickshell.env("HOME") + "/.cache/wallust/colors.json"
-
     adapter: JsonAdapter {
       id: themeAdapter
 
       property JsonObject special: JsonObject {
-        property color background: "#1E1E2E"
-        property color foreground: "#CDD6F4"
-        property color cursor: "#F5E0DC"
+        property color background: "#111513"
+        property color foreground: "#EBDEB7"
       }
 
       property JsonObject colors: JsonObject {
-        property color color0: "#45475A"
-        property color color1: "#F38BA8"
-        property color color2: "#A6E3A1"
-        property color color3: "#F9E2AF"
-        property color color4: "#89B4FA"
-        property color color5: "#F5C2E7"
-        property color color6: "#94E2D5"
-        property color color7: "#BAC2DE"
-        property color color8: "#585B70"
-        property color color9: "#F38BA8"
-        property color color10: "#A6E3A1"
-        property color color11: "#F9E2AF"
-        property color color12: "#89B4FA"
-        property color color13: "#F5C2E7"
-        property color color14: "#94E2D5"
-        property color color15: "#A6ADC8"
+        property color color0: "#393C3A"
+        property color color1: "#323413"
+        property color color2: "#4A4517"
+        property color color3: "#63571B"
+        property color color4: "#7B6820"
+        property color color5: "#947924"
+        property color color6: "#947924"
+        property color color7: "#DAC88F"
+        property color color8: "#988C64"
+        property color color9: "#424619"
+        property color color10: "#635D1F"
+        property color color11: "#847325"
+        property color color12: "#A48A2A"
+        property color color13: "#C5A130"
+        property color color14: "#C5A130"
+        property color color15: "#DAC88F"
       }
     }
   }
