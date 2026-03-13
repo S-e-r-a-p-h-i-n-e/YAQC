@@ -7,59 +7,42 @@ import qs.globals
 Item {
     id: root
 
-    property bool   isHorizontal: true
-    property real   barSize:      50   // for implicit size reporting up the chain
-    property real   moduleSize:   32   // actual pill/module thickness
-    property string barFont:      "JetBrainsMono Nerd Font"
-    property var    modules:      []
+    property bool isHorizontal: Config.isHorizontal
+    property real moduleSize:   Style.moduleSize
+    property var  modules:      []
 
-    implicitWidth:  isHorizontal ? pillRow.implicitWidth + 16 : moduleSize
-    implicitHeight: isHorizontal ? moduleSize                 : pillCol.implicitHeight + 16
+    implicitWidth:  isHorizontal ? pillRow.implicitWidth + Style.pillPadding : moduleSize
+    implicitHeight: isHorizontal ? moduleSize                                : pillCol.implicitHeight + Style.pillPadding
 
     Rectangle {
         anchors.fill: parent
         radius:       Math.min(width, height) / 2
         color:        Colors.color0
-        opacity:      0.6
+        opacity:      Style.pillOpacity
+    }
+
+    component PillDelegate: Loader {
+        required property string modelData
+        sourceComponent: ModuleRegistry.resolve(modelData)
+        Binding { when: status === Loader.Ready; target: item; property: "isHorizontal"; value: root.isHorizontal }
+        Binding { when: status === Loader.Ready; target: item; property: "barThickness";  value: root.moduleSize }
+        // Only inject inPill on items that declare it (chips) — custom views like ClockView don't have it
+        Binding { when: status === Loader.Ready && item !== null && item.hasOwnProperty("inPill"); target: item; property: "inPill"; value: true }
     }
 
     Row {
         id: pillRow
         visible:          root.isHorizontal
         anchors.centerIn: parent
-        spacing: 6
-
-        Repeater {
-            model: root.isHorizontal ? root.modules : []
-            delegate: Loader {
-                id: phLoader
-                required property string modelData
-                sourceComponent: ModuleRegistry.resolve(modelData)
-                Binding { when: phLoader.status === Loader.Ready; target: phLoader.item; property: "isHorizontal"; value: root.isHorizontal }
-                Binding { when: phLoader.status === Loader.Ready; target: phLoader.item; property: "barThickness";  value: root.moduleSize }
-                Binding { when: phLoader.status === Loader.Ready; target: phLoader.item; property: "barFont";       value: root.barFont }
-                Binding { when: phLoader.status === Loader.Ready; target: phLoader.item; property: "inPill";        value: true }
-            }
-        }
+        spacing: Style.pillSpacing
+        Repeater { model: root.isHorizontal ? root.modules : []; delegate: PillDelegate {} }
     }
 
     Column {
         id: pillCol
         visible:          !root.isHorizontal
         anchors.centerIn: parent
-        spacing: 6
-
-        Repeater {
-            model: root.isHorizontal ? [] : root.modules
-            delegate: Loader {
-                id: pvLoader
-                required property string modelData
-                sourceComponent: ModuleRegistry.resolve(modelData)
-                Binding { when: pvLoader.status === Loader.Ready; target: pvLoader.item; property: "isHorizontal"; value: root.isHorizontal }
-                Binding { when: pvLoader.status === Loader.Ready; target: pvLoader.item; property: "barThickness";  value: root.moduleSize }
-                Binding { when: pvLoader.status === Loader.Ready; target: pvLoader.item; property: "barFont";       value: root.barFont }
-                Binding { when: pvLoader.status === Loader.Ready; target: pvLoader.item; property: "inPill";        value: true }
-            }
-        }
+        spacing: Style.pillSpacing
+        Repeater { model: root.isHorizontal ? [] : root.modules; delegate: PillDelegate {} }
     }
 }

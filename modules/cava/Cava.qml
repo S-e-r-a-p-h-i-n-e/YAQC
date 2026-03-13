@@ -7,8 +7,11 @@ import Quickshell.Io
 import qs.globals
 
 QtObject {
-    property string bars:     "▁▁▁▁▁▁▁▁"
-    property bool   present:  false
+    readonly property string moduleType: "custom"
+
+    property string bars:    "▁▁▁▁▁▁▁▁"
+    property bool   present: false
+
     property var _check: Process {
         id: checkProc
         command: ["/bin/bash", "-l", "-c", "command -v cava.sh >/dev/null 2>&1 && echo yes || echo no"]

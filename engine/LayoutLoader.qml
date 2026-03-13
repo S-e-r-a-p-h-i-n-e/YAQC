@@ -1,5 +1,4 @@
 // engine/LayoutLoader.qml
-// Reads the active JSON layout and renders the bar on every screen.
 pragma ComponentBehavior: Bound
 
 import Quickshell
@@ -10,10 +9,8 @@ import qs.globals
 Scope {
     id: root
 
-    readonly property real   barSize:    40   // navbar window thickness
-    readonly property real   moduleSize: 28   // module/pill thickness
-    readonly property string barFont:    "JetBrainsMono Nerd Font"
-    readonly property bool   isHorizontal: Config.isHorizontal
+    // Exposed so panels can offset themselves correctly
+    readonly property real barSize: Style.barSize
 
     property var layoutLeft:   []
     property var layoutCenter: []
@@ -49,74 +46,51 @@ Scope {
                 right:  Config.navbarLocation !== "left"
             }
 
-            implicitHeight: root.isHorizontal ? root.barSize : 0
-            implicitWidth:  root.isHorizontal ? 0            : root.barSize
+            implicitHeight: Config.isHorizontal ? Style.barSize : 0
+            implicitWidth:  Config.isHorizontal ? 0              : Style.barSize
+
+            component BarSlot: SlotLayout {
+                isHorizontal: Config.isHorizontal
+                moduleSize:   Style.moduleSize
+            }
 
             // ── Horizontal ────────────────────────────────────────────────
-            SlotLayout {
-                isHorizontal: root.isHorizontal
-                barSize:      root.barSize
-                moduleSize:   root.moduleSize
-                barFont:      root.barFont
-                modules:      root.layoutLeft
-                visible:      root.isHorizontal
+            BarSlot {
+                visible: Config.isHorizontal
+                modules: root.layoutLeft
                 anchors.left:           parent.left
                 anchors.leftMargin:     12
                 anchors.verticalCenter: parent.verticalCenter
             }
-
-            SlotLayout {
-                isHorizontal: root.isHorizontal
-                barSize:      root.barSize
-                moduleSize:   root.moduleSize
-                barFont:      root.barFont
-                modules:      root.layoutCenter
-                visible:      root.isHorizontal
+            BarSlot {
+                visible: Config.isHorizontal
+                modules: root.layoutCenter
                 anchors.centerIn: parent
             }
-
-            SlotLayout {
-                isHorizontal: root.isHorizontal
-                barSize:      root.barSize
-                moduleSize:   root.moduleSize
-                barFont:      root.barFont
-                modules:      root.layoutRight
-                visible:      root.isHorizontal
+            BarSlot {
+                visible: Config.isHorizontal
+                modules: root.layoutRight
                 anchors.right:          parent.right
                 anchors.rightMargin:    12
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             // ── Vertical ──────────────────────────────────────────────────
-            SlotLayout {
-                isHorizontal: false
-                barSize:      root.barSize
-                moduleSize:   root.moduleSize
-                barFont:      root.barFont
-                modules:      root.layoutLeft
-                visible:      !root.isHorizontal
+            BarSlot {
+                visible: !Config.isHorizontal
+                modules: root.layoutLeft
                 anchors.top:              parent.top
                 anchors.topMargin:        12
                 anchors.horizontalCenter: parent.horizontalCenter
             }
-
-            SlotLayout {
-                isHorizontal: false
-                barSize:      root.barSize
-                moduleSize:   root.moduleSize
-                barFont:      root.barFont
-                modules:      root.layoutCenter
-                visible:      !root.isHorizontal
+            BarSlot {
+                visible: !Config.isHorizontal
+                modules: root.layoutCenter
                 anchors.centerIn: parent
             }
-
-            SlotLayout {
-                isHorizontal: false
-                barSize:      root.barSize
-                moduleSize:   root.moduleSize
-                barFont:      root.barFont
-                modules:      root.layoutRight
-                visible:      !root.isHorizontal
+            BarSlot {
+                visible: !Config.isHorizontal
+                modules: root.layoutRight
                 anchors.bottom:           parent.bottom
                 anchors.bottomMargin:     12
                 anchors.horizontalCenter: parent.horizontalCenter

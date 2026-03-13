@@ -1,4 +1,4 @@
-// modules/idleinhibitor/IdleInhibitor.qml  — BACKEND ONLY
+// modules/idleinhibitor/IdleInhibitor.qml  — BACKEND + MODULE DESCRIPTOR
 pragma Singleton
 
 import QtQuick
@@ -7,9 +7,20 @@ import Quickshell.Io
 import qs.globals
 
 QtObject {
+    readonly property string moduleType: "static"
+
+    readonly property var item: ({
+        icon:        IdleInhibitor.icon,
+        active:      IdleInhibitor.inhibited,
+        activeColor: Colors.color7,
+        bgColor:     Colors.color0,
+        onClicked:   function() { IdleInhibitor.toggle() }
+    })
+
     property bool inhibited: false
     function toggle() { inhibited = !inhibited }
     readonly property string icon: inhibited ? "" : ""
+
     property var _proc: Process {
         running: inhibited
         command: ["/bin/bash", "-c",

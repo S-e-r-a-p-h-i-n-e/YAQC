@@ -1,4 +1,4 @@
-// modules/status/Status.qml  — BACKEND ONLY
+// modules/status/Status.qml  — BACKEND + MODULE DESCRIPTOR
 pragma Singleton
 
 import QtQuick
@@ -7,6 +7,28 @@ import Quickshell.Io
 import qs.globals
 
 QtObject {
+    readonly property string moduleType: "dynamic"
+
+    // Status exposes multiple optional chips — battery and/or backlight
+    // Each is only included in items if the hardware is present
+    readonly property var items: {
+        let out = []
+        if (Status.hasBattery)
+            out.push({
+                icon:    Status.battIcon,
+                label:   Status.battPercent + "%",
+                bgColor: Status.battLow ? Colors.color1 : Colors.color0
+            })
+        if (Status.hasBacklight)
+            out.push({
+                icon:      Status.blIcon,
+                label:     Status.blPercent + "%",
+                bgColor:   Colors.color0,
+                onScrolled: function(d) { Status.stepBacklight(d) }
+            })
+        return out
+    }
+
     // ── Battery ───────────────────────────────────────────────────────────
     property int    battPercent: 0
     property string battStatus:  "Unknown"

@@ -1,4 +1,4 @@
-// modules/cava/CavaView.qml  — FRONTEND ONLY
+// modules/cava/CavaView.qml
 import QtQuick
 import qs.globals
 
@@ -6,8 +6,10 @@ Item {
     id: root
     property bool   isHorizontal: true
     property real   barThickness: 28
+    property bool   inPill:       false
     property string barFont:      "JetBrainsMono Nerd Font"
 
+    // Cava only makes sense horizontally — hides in vertical layouts
     visible:        Cava.present && root.isHorizontal
     implicitWidth:  visible ? label.implicitWidth + 20 : 0
     implicitHeight: visible ? barThickness             : 0

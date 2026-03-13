@@ -30,16 +30,13 @@ Singleton {
         }
     }
 
-    function saveSetting(key, value) {
-        if (key === "navbarLocation") root.navbarLocation = value
-        if (key === "enableBorders")  root.enableBorders  = value
-        if (key === "activeLayout")   root.activeLayout   = value
+    readonly property var settingKeys: ["navbarLocation", "enableBorders", "activeLayout"]
 
-        let fileData = {
-            navbarLocation: root.navbarLocation,
-            enableBorders:  root.enableBorders,
-            activeLayout:   root.activeLayout,
-        }
+    function saveSetting(key, value) {
+        root[key] = value
+
+        let fileData = {}
+        for (let k of root.settingKeys) fileData[k] = root[k]
 
         let jsonString = JSON.stringify(fileData, null, 2)
         Quickshell.execDetached({

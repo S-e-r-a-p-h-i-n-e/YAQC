@@ -10,11 +10,11 @@
     [
       "cliphist",
       "wallchange",
+      "idleinhibitor",
       "clock"
     ],
     [
-      "workspaces",
-      "idleinhibitor"
+      "workspaces"
     ]
   ],
   "right": []

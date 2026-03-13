@@ -1,3 +1,2 @@
 module qs.modules.cliphist
 singleton ClipHist 1.0 ClipHist.qml
-ClipHistView      1.0 ClipHistView.qml

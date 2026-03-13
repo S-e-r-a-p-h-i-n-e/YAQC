@@ -1,4 +1,4 @@
-// modules/network/Network.qml  — BACKEND ONLY
+// modules/network/Network.qml  — BACKEND + MODULE DESCRIPTOR
 pragma Singleton
 
 import QtQuick
@@ -7,18 +7,31 @@ import Quickshell.Io
 import qs.globals
 
 QtObject {
-    property string ssid:        ""
-    property bool   connected:   false
-    property bool   isEthernet:  false
+    readonly property string moduleType: "dynamic"
+
+    readonly property var items: [
+        {
+            icon:      Network.icon,
+            label:     Network.label,
+            bgColor:   Network.connected ? Colors.color0 : Colors.color1,
+            onClicked: function() { Network.openSettings() }
+        }
+    ]
+
+    property string ssid:       ""
+    property bool   connected:  false
+    property bool   isEthernet: false
     readonly property string icon: {
         if (!connected)  return "󰤮"
         if (isEthernet)  return "󰈀"
         return " "
     }
     readonly property string label: connected ? ssid : ""
+
     function openSettings() {
         Quickshell.execDetached({ command: ["/bin/bash", "-l", "-c", "nm-connection-editor"] })
     }
+
     property var _proc: Process {
         id: netProc
         command: ["/bin/bash", "-c",

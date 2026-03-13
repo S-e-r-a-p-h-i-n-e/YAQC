@@ -1,4 +1,4 @@
-// modules/systeminfo/SystemInfo.qml  — BACKEND ONLY
+// modules/systeminfo/SystemInfo.qml  — BACKEND + MODULE DESCRIPTOR
 pragma Singleton
 
 import QtQuick
@@ -7,14 +7,43 @@ import Quickshell.Io
 import qs.globals
 
 QtObject {
+    readonly property string moduleType: "dynamic"
+
+    readonly property var items: {
+        let out = [
+            {
+                icon:      "󰍛",
+                label:     SystemInfo.cpuPercent + "%",
+                bgColor:   Colors.color0,
+                onClicked: function() { SystemInfo.openMonitor() }
+            },
+            {
+                icon:      "󰾆",
+                label:     SystemInfo.memPercent + "%",
+                bgColor:   Colors.color0,
+                onClicked: function() { SystemInfo.openMonitor() }
+            }
+        ]
+        if (SystemInfo.gpuText !== "")
+            out.push({
+                icon:      "󰢮",
+                label:     SystemInfo.gpuText,
+                bgColor:   Colors.color0,
+                onClicked: function() { SystemInfo.openMonitor() }
+            })
+        return out
+    }
+
     property int    cpuPercent: 0
     property int    memPercent: 0
     property string gpuText:    ""
     property int _prevIdle:  0
     property int _prevTotal: 0
+
     function openMonitor() {
         Quickshell.execDetached({ command: ["/bin/bash", "-l", "-c", "kitty -e btop"] })
     }
+
     property var _sysProc: Process {
         id: sysProc
         command: ["/bin/bash", "-c", "cat /proc/stat | head -1; echo '---'; cat /proc/meminfo"]

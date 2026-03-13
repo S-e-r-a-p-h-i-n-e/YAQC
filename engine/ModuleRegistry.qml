@@ -3,12 +3,12 @@ pragma Singleton
 
 import QtQuick
 import Quickshell
+import qs.components
 import qs.modules.audio
 import qs.modules.cava
-import qs.modules.cliphist
 import qs.modules.clock
+import qs.modules.cliphist
 import qs.modules.idleinhibitor
-import qs.modules.layoutswitcher
 import qs.modules.media
 import qs.modules.network
 import qs.modules.notifications
@@ -24,50 +24,86 @@ import qs.modules.workspaces
 QtObject {
     id: root
 
+    // Adding a module: declare its Component below, add one entry here.
+    readonly property var _map: ({
+        // ── Dynamic ───────────────────────────────────────────────────────
+        "audio":         audioDynamic,
+        "network":       networkDynamic,
+        "status":        statusDynamic,  "battery":  statusDynamic, "backlight": statusDynamic,
+        "systeminfo":    sysinfoDynamic, "cpu":      sysinfoDynamic, "memory": sysinfoDynamic,
+        "updates":       updatesDynamic,
+        // ── Static ────────────────────────────────────────────────────────
+        "cliphist":      cliphistStatic,
+        "idleinhibitor": idleinhibitorStatic,
+        "notifications": notificationsStatic,
+        "power":         powerStatic,
+        "settings":      settingsStatic,
+        "tray":          trayStatic,
+        "wallchange":    wallchangeStatic,
+        // ── Custom ────────────────────────────────────────────────────────
+        "cava":          cavaView,
+        "clock":         clockView,
+        "media":         mediaView,
+        "workspaces":    workspacesView,
+    })
+
     function resolve(name) {
-        switch (name) {
-            case "audio":          return audioView
-            case "cava":           return cavaView
-            case "cliphist":       return clipHistView
-            case "clock":          return clockView
-            case "idleinhibitor":  return idleInhibitorView
-            case "layoutswitcher": return layoutSwitcherView
-            case "media":          return mediaView
-            case "network":        return networkView
-            case "notifications":  return notificationsView
-            case "power":          return powerView
-            case "settings":       return settingsView
-            case "status":         return statusView
-            case "battery":        return statusView   // alias
-            case "backlight":      return statusView   // alias
-            case "cpu":            return systemInfoView
-            case "memory":         return systemInfoView
-            case "systeminfo":     return systemInfoView
-            case "tray":           return trayView
-            case "updates":        return updatesView
-            case "wallchange":     return wallChangeView
-            case "workspaces":     return workspacesView
-            default:
-                console.warn("ModuleRegistry: unknown module '" + name + "'")
-                return null
-        }
+        let c = _map[name]
+        if (!c) console.warn("ModuleRegistry: unknown module '" + name + "'")
+        return c ?? null
     }
 
-    property Component audioView:         AudioView         {}
-    property Component cavaView:          CavaView          {}
-    property Component clipHistView:      ClipHistView      {}
-    property Component clockView:         ClockView         {}
-    property Component idleInhibitorView: IdleInhibitorView {}
-    property Component layoutSwitcherView: LayoutSwitcherView {}
-    property Component mediaView:         MediaView         {}
-    property Component networkView:       NetworkView       {}
-    property Component notificationsView: NotificationsView {}
-    property Component powerView:         PowerView         {}
-    property Component settingsView:      SettingsView      {}
-    property Component statusView:        StatusView        {}
-    property Component systemInfoView:    SystemInfoView    {}
-    property Component trayView:          TrayView          {}
-    property Component updatesView:       UpdatesView       {}
-    property Component wallChangeView:    WallChangeView    {}
-    property Component workspacesView:    WorkspacesView    {}
+    // ── Dynamic ───────────────────────────────────────────────────────────
+    property Component audioDynamic: Component {
+        DynamicChip { items: Audio.items }
+    }
+    property Component networkDynamic: Component {
+        DynamicChip { items: Network.items }
+    }
+    property Component statusDynamic: Component {
+        DynamicChip { items: Status.items }
+    }
+    property Component sysinfoDynamic: Component {
+        DynamicChip { items: SystemInfo.items }
+    }
+    property Component updatesDynamic: Component {
+        DynamicChip { items: Updates.items }
+    }
+
+    // ── Static ────────────────────────────────────────────────────────────
+    property Component cliphistStatic: Component {
+        StaticChip { item: ClipHist.item }
+    }
+    property Component idleinhibitorStatic: Component {
+        StaticChip { item: IdleInhibitor.item }
+    }
+    property Component notificationsStatic: Component {
+        StaticChip { item: Notifications.item }
+    }
+    property Component powerStatic: Component {
+        StaticChip { item: Power.item }
+    }
+    property Component settingsStatic: Component {
+        StaticChip { item: SettingsModule.item }
+    }
+    property Component trayStatic: Component {
+        StaticChip { item: Tray.item }
+    }
+    property Component wallchangeStatic: Component {
+        StaticChip { item: WallChange.item }
+    }
+
+    // ── Custom ────────────────────────────────────────────────────────────
+    property Component cavaView: Component {
+        CavaView {}
+    }
+    property Component clockView: Component {
+        ClockView {}
+    }
+    property Component mediaView: Component {
+        MediaView {}
+    }
+    property Component workspacesView: Component {
+        WorkspacesView {}
+    }
 }

@@ -1,51 +1,58 @@
-// modules/clock/ClockView.qml  — FRONTEND ONLY
+// modules/clock/ClockView.qml
 import QtQuick
 import qs.globals
-import qs.components
 
 Item {
     id: root
-    property bool   isHorizontal: true
-    property real   barThickness: 28
-    property string barFont:      "JetBrainsMono Nerd Font"
+    property bool isHorizontal: Config.isHorizontal
+    property real barThickness: Style.moduleSize
 
     readonly property string timeHour: Clock.time.split(":")[0] ?? ""
     readonly property string timeMin:  Clock.time.split(":")[1] ?? ""
 
-    implicitWidth:  isHorizontal ? chip.implicitWidth : barThickness
-    implicitHeight: isHorizontal ? barThickness       : vertPill.height
+    implicitWidth:  isHorizontal ? hPill.implicitWidth : barThickness
+    implicitHeight: isHorizontal ? barThickness        : vPill.height
 
-    // ── Horizontal: single pill ───────────────────────────────────────────
-    Chip {
-        id: chip
+    // ── Horizontal ────────────────────────────────────────────────────────
+    Rectangle {
+        id: hPill
         visible:          root.isHorizontal
         anchors.centerIn: parent
-        icon:    ""
-        label:   Clock.time
-        size:    root.barThickness
-        barFont: root.barFont
-        bgColor: Colors.color0
+        implicitWidth:    timeText.implicitWidth + root.barThickness * 0.6
+        height:           root.barThickness
+        radius:           height / 2
+        color:            Colors.color0
+
+        Text {
+            id: timeText
+            anchors.centerIn: parent
+            text:           Clock.time
+            font.family:    Style.barFont
+            font.pixelSize: root.barThickness * 0.48
+            font.weight:    Font.Bold
+            color:          Colors.foreground
+        }
     }
 
-    // ── Vertical: single pill, hours over minutes ─────────────────────────
+    // ── Vertical ──────────────────────────────────────────────────────────
     Rectangle {
-        id: vertPill
+        id: vPill
         visible:          !root.isHorizontal
         anchors.centerIn: parent
         width:   root.barThickness
-        height:  vertInner.implicitHeight + root.barThickness * 0.6
+        height:  vInner.implicitHeight + root.barThickness * 0.6
         radius:  root.barThickness / 2
         color:   Colors.color0
 
         Column {
-            id: vertInner
+            id: vInner
             anchors.centerIn: parent
             spacing: 0
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text:           root.timeHour
-                font.family:    root.barFont
+                font.family:    Style.barFont
                 font.pixelSize: root.barThickness * 0.48
                 font.weight:    Font.Bold
                 color:          Colors.foreground
@@ -53,7 +60,7 @@ Item {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text:           root.timeMin
-                font.family:    root.barFont
+                font.family:    Style.barFont
                 font.pixelSize: root.barThickness * 0.48
                 font.weight:    Font.Bold
                 color:          Colors.foreground

@@ -1,4 +1,4 @@
-// modules/wallchange/WallChange.qml  — BACKEND ONLY
+// modules/wallchange/WallChange.qml  — BACKEND + MODULE DESCRIPTOR
 pragma Singleton
 
 import QtQuick
@@ -6,6 +6,15 @@ import Quickshell
 import qs.globals
 
 QtObject {
+    readonly property string moduleType: "static"
+
+    readonly property var item: ({
+        icon:      "󰸉",
+        bgColor:   Colors.color7,
+        fgColor:   Colors.background,
+        onClicked: function() { WallChange.change() }
+    })
+
     function change() {
         Quickshell.execDetached({ command: ["/bin/bash", "-l", "-c", "wallchange.sh"] })
     }

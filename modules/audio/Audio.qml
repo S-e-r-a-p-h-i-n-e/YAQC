@@ -1,5 +1,6 @@
-// modules/audio/Audio.qml  — BACKEND ONLY
-// Exposes sink/source state. No UI whatsoever.
+// modules/audio/Audio.qml  — BACKEND + MODULE DESCRIPTOR
+// Exposes sink/source state and declares itself as a dynamic module.
+// AudioView.qml is removed — DynamicChip engine consumes `items` directly.
 pragma Singleton
 
 import QtQuick
@@ -8,6 +9,32 @@ import Quickshell.Io
 import qs.globals
 
 QtObject {
+    // ── Module identity ───────────────────────────────────────────────────
+    readonly property string moduleType: "dynamic"
+
+    // ── Chip item descriptors — what DynamicChip renders ─────────────────
+    // Fully reactive: any backend property change here flows to the chip.
+    readonly property var items: [
+        {
+            icon:      Audio.speakerIcon,
+            label:     Audio.sinkMuted ? "muted" : Audio.sinkVolume + "%",
+            bgColor:   Audio.sinkMuted ? Colors.color1 : Colors.color0,
+            onClicked:  function() { Audio.muteSink() },
+            onScrolled: function(d) {
+                Audio.setSinkVolume(Math.max(0, Math.min(100, Audio.sinkVolume + d * 5)))
+            }
+        },
+        {
+            icon:      Audio.micIcon,
+            label:     Audio.srcMuted ? "muted" : Audio.srcVolume + "%",
+            bgColor:   Audio.srcMuted ? Colors.color1 : Colors.color0,
+            onClicked:  function() { Audio.muteSrc() },
+            onScrolled: function(d) {
+                Audio.setSrcVolume(Math.max(0, Math.min(100, Audio.srcVolume + d * 5)))
+            }
+        }
+    ]
+
     // ── Sink (speaker) ────────────────────────────────────────────────────
     property int    sinkVolume: 100
     property bool   sinkMuted:  false
@@ -17,18 +44,21 @@ QtObject {
         if (sinkVolume > 34) return ""
         return ""
     }
+
     // ── Source (microphone) ───────────────────────────────────────────────
     property int    srcVolume: 100
     property bool   srcMuted:  false
     readonly property string micIcon: srcMuted ? "󰍭" : "󰍬"
+
     // ── Commands ──────────────────────────────────────────────────────────
-    function muteSink()          { Quickshell.execDetached({ command: ["pactl", "set-sink-mute",   "@DEFAULT_SINK@",   "toggle"] }); Qt.callLater(pollSink) }
-    function muteSrc()           { Quickshell.execDetached({ command: ["pactl", "set-source-mute", "@DEFAULT_SOURCE@", "toggle"] }); Qt.callLater(pollSrc) }
-    function setSinkVolume(v)    { Quickshell.execDetached({ command: ["pactl", "set-sink-volume",   "@DEFAULT_SINK@",   v + "%"] }); Qt.callLater(pollSink) }
-    function setSrcVolume(v)     { Quickshell.execDetached({ command: ["pactl", "set-source-volume", "@DEFAULT_SOURCE@", v + "%"] }); Qt.callLater(pollSrc) }
-    function openMixer()         { Quickshell.execDetached({ command: ["pavucontrol"] }) }
-    function pollSink() { sinkProc.running = true }
-    function pollSrc()  { srcProc.running  = true }
+    function muteSink()       { Quickshell.execDetached({ command: ["pactl", "set-sink-mute",   "@DEFAULT_SINK@",   "toggle"] }); Qt.callLater(pollSink) }
+    function muteSrc()        { Quickshell.execDetached({ command: ["pactl", "set-source-mute", "@DEFAULT_SOURCE@", "toggle"] }); Qt.callLater(pollSrc) }
+    function setSinkVolume(v) { Quickshell.execDetached({ command: ["pactl", "set-sink-volume",   "@DEFAULT_SINK@",   v + "%"] }); Qt.callLater(pollSink) }
+    function setSrcVolume(v)  { Quickshell.execDetached({ command: ["pactl", "set-source-volume", "@DEFAULT_SOURCE@", v + "%"] }); Qt.callLater(pollSrc) }
+    function openMixer()      { Quickshell.execDetached({ command: ["pavucontrol"] }) }
+    function pollSink()       { sinkProc.running = true }
+    function pollSrc()        { srcProc.running  = true }
+
     // ── Polling ───────────────────────────────────────────────────────────
     property var _sinkProc: Process {
         id: sinkProc

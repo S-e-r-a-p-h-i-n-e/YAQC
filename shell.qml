@@ -11,7 +11,6 @@ import qs.modules.cava
 import qs.modules.cliphist
 import qs.modules.clock
 import qs.modules.idleinhibitor
-import qs.modules.layoutswitcher
 import qs.modules.media
 import qs.modules.network
 import qs.modules.notifications
@@ -37,8 +36,8 @@ Scope {
             Qt.resolvedUrl("file://" + Quickshell.env("HOME") + "/.icons"),
         ]
         for (let p of extra) {
-            if (!Qt.iconSearchPaths.includes(p))
-                Qt.iconSearchPaths = Qt.iconSearchPaths.concat([p])
+            if (!(Qt.iconSearchPaths ?? []).includes(p))
+                Qt.iconSearchPaths = (Qt.iconSearchPaths ?? []).concat([p])
         }
     }
 

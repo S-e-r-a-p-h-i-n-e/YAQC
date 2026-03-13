@@ -2,9 +2,8 @@ module qs.components
 
 AnimatedElement  1.0 AnimatedElement.qml
 Button           1.0 Button.qml
-Chip             1.0 Chip.qml
-IconButton       1.0 IconButton.qml
 Panel            1.0 Panel.qml
 ScreenBorder     1.0 ScreenBorder.qml
-ScrollText       1.0 ScrollText.qml
 Toggle           1.0 Toggle.qml
+DynamicChip      1.0 DynamicChip.qml
+StaticChip       1.0 StaticChip.qml

@@ -12,7 +12,7 @@ Singleton {
 
   readonly property color background: themeAdapter.special.background
   readonly property color foreground: themeAdapter.special.foreground
-  readonly property color cursor: themeAdapter.special.cursor
+  readonly property color cursor: "#FFFFFF"
 
   readonly property color color0: themeAdapter.colors.color0
   readonly property color color1: themeAdapter.colors.color1
@@ -37,27 +37,27 @@ Singleton {
       id: themeAdapter
 
       property JsonObject special: JsonObject {
-        property color background: "#1E1E23"
-        property color foreground: "#F6CBDB"
+        property color background: "#1C1C1E"
+        property color foreground: "#F0CAC6"
       }
 
       property JsonObject colors: JsonObject {
-        property color color0: "#45454A"
-        property color color1: "#46293F"
-        property color color2: "#60334C"
-        property color color3: "#793C58"
-        property color color4: "#924665"
-        property color color5: "#AB5071"
-        property color color6: "#AB5071"
-        property color color7: "#E9ACC3"
-        property color color8: "#A37888"
-        property color color9: "#5E3754"
-        property color color10: "#804465"
-        property color color11: "#A15076"
-        property color color12: "#C25D86"
-        property color color13: "#E46A97"
-        property color color14: "#E46A97"
-        property color color15: "#E9ACC3"
+        property color color0: "#434345"
+        property color color1: "#432829"
+        property color color2: "#5A3130"
+        property color color3: "#713B37"
+        property color color4: "#87443D"
+        property color color5: "#9E4E44"
+        property color color6: "#9E4E44"
+        property color color7: "#E1ABA4"
+        property color color8: "#9D7873"
+        property color color9: "#5A3537"
+        property color color10: "#784240"
+        property color color11: "#964E49"
+        property color color12: "#B55B52"
+        property color color13: "#D3685B"
+        property color color14: "#D3685B"
+        property color color15: "#E1ABA4"
       }
     }
   }

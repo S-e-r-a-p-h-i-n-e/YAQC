@@ -7,6 +7,8 @@ import Quickshell.Services.Mpris
 import qs.globals
 
 QtObject {
+    readonly property string moduleType: "custom"
+
     readonly property var player: {
         let players = Mpris.players.values
         for (let i = 0; i < players.length; i++)

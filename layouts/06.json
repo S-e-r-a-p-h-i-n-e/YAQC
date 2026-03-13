@@ -17,12 +17,12 @@
       "network"
     ],
     [
+      "cliphist",
+      "wallchange",
       "tray",
       "notifications",
       "settings",
-      "power",
-      "cliphist",
-      "wallchange"
+      "power"
     ]
   ]
 }
