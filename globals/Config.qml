@@ -11,10 +11,12 @@ Singleton {
     readonly property string configPath: Quickshell.env("HOME") + "/.config/quickshell/config.json"
     readonly property string tmpPath:    Quickshell.env("HOME") + "/.config/quickshell/.config.json.tmp"
 
-    property string navbarLocation:   "top"
-    property bool   enableBorders:    true
+    property string navbarLocation:    "top"
+    property bool   enableBorders:     true
     property bool   transparentNavbar: false
-    property string activeLayout:     "default"
+    property string activeLayout:      "default"
+    // Stored as JSON string since JsonAdapter doesn't support arrays directly
+    property string dashboardLayout:   JSON.stringify(["stats","speaker","mic","network","idleinhibitor","media"])
 
     // True once config.json has been read at least once.
     // Panel windows must not be created before this is true, because
@@ -33,6 +35,7 @@ Singleton {
             property bool   enableBorders:     true
             property bool   transparentNavbar: false
             property string activeLayout:      "default"
+            property string dashboardLayout:   ""
 
             onNavbarLocationChanged: {
                 root.navbarLocation = navbarLocation
@@ -41,6 +44,7 @@ Singleton {
             onEnableBordersChanged:     root.enableBorders     = enableBorders
             onTransparentNavbarChanged: root.transparentNavbar = transparentNavbar
             onActiveLayoutChanged:      root.activeLayout      = activeLayout
+            onDashboardLayoutChanged:   { if (dashboardLayout !== "") root.dashboardLayout = dashboardLayout }
         }
     }
 
@@ -55,7 +59,7 @@ Singleton {
         onTriggered: root.loaded = true
     }
 
-    readonly property var settingKeys: ["navbarLocation", "enableBorders", "transparentNavbar", "activeLayout"]
+    readonly property var settingKeys: ["navbarLocation", "enableBorders", "transparentNavbar", "activeLayout", "dashboardLayout"]
 
     function saveSetting(key, value) {
         root[key] = value
