@@ -80,7 +80,7 @@ Item {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                     onClicked: (e) => {
-                        if (e.button === Qt.RightButton && trayItem.modelData.hasMenu) {
+                        if (e.button === Qt.LeftButton && trayItem.modelData.hasMenu) {
                             menuAnchor.open()
                         } else {
                             trayItem.modelData.activate()

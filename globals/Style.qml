@@ -29,6 +29,12 @@ Singleton {
     property real chipSpacing:      6
     property real chipInnerSpacing: 5
 
+    // ── Panels ────────────────────────────────────────────────────────────
+    property real panelWidth:   400
+    property real panelHeight:  500
+    property real panelRadius:  20
+    property real panelPadding: 25
+
     // ── Border ────────────────────────────────────────────────────────────
     property real borderWidth:  10
     property real cornerRadius: 20
@@ -46,6 +52,10 @@ Singleton {
             property real   pillOpacity:       0.6
             property real   chipSpacing:       6
             property real   chipInnerSpacing:  5
+            property real   panelWidth:        400
+            property real   panelHeight:       500
+            property real   panelRadius:       20
+            property real   panelPadding:      25
             property real   borderWidth:       10
             property real   cornerRadius:      20
 
@@ -59,6 +69,10 @@ Singleton {
             onPillOpacityChanged:      root.pillOpacity      = pillOpacity
             onChipSpacingChanged:      root.chipSpacing      = chipSpacing
             onChipInnerSpacingChanged: root.chipInnerSpacing = chipInnerSpacing
+            onPanelWidthChanged:       root.panelWidth       = panelWidth
+            onPanelHeightChanged:      root.panelHeight      = panelHeight
+            onPanelRadiusChanged:      root.panelRadius      = panelRadius
+            onPanelPaddingChanged:     root.panelPadding     = panelPadding
             onBorderWidthChanged:      root.borderWidth      = borderWidth
             onCornerRadiusChanged:     root.cornerRadius     = cornerRadius
         }
@@ -67,7 +81,9 @@ Singleton {
     readonly property var styleKeys: [
         "barSize", "moduleSize", "barFont", "barPadding",
         "slotSpacing", "pillPadding", "pillSpacing", "pillOpacity",
-        "chipSpacing", "chipInnerSpacing", "borderWidth", "cornerRadius"
+        "chipSpacing", "chipInnerSpacing",
+        "panelWidth", "panelHeight", "panelRadius", "panelPadding",
+        "borderWidth", "cornerRadius"
     ]
 
     function saveSetting(key, value) {

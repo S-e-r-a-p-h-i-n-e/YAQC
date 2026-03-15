@@ -8,8 +8,8 @@ import qs.globals
 Panel {
     id: advPanel
 
-    panelWidth:  380
-    panelHeight: 600
+    // ── Tab state ─────────────────────────────────────────────────────────
+    property int activeTab: 0   // 0 = Navbar, 1 = Panels
 
     Column {
         anchors.fill: parent
@@ -17,22 +17,65 @@ Panel {
 
         // ── Header ────────────────────────────────────────────────────────
         Text {
+            id: advHeader
             text:           "󰒓  Advanced Settings"
             color:          Colors.foreground
             font.family:    Style.barFont
             font.pixelSize: 18
             font.weight:    Font.ExtraBold
             anchors.horizontalCenter: parent.horizontalCenter
-            bottomPadding:  16
+            bottomPadding:  12
         }
 
-        Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+        // ── Tab bar ───────────────────────────────────────────────────────
+        Item {
+            id: advTabBar
+            width:  parent.width
+            height: 36
 
-        // ── Scrollable fields ─────────────────────────────────────────────
+            Row {
+                anchors.centerIn: parent
+                spacing: 8
+
+                Repeater {
+                    model: ["Navbar", "Panels"]
+                    delegate: Rectangle {
+                        required property string modelData
+                        required property int    index
+
+                        width:  100
+                        height: 30
+                        radius: 15
+                        color:  advPanel.activeTab === index ? Colors.color7 : Colors.color0
+                        Behavior on color { ColorAnimation { duration: 150 } }
+
+                        Text {
+                            anchors.centerIn: parent
+                            text:        parent.modelData
+                            color:       advPanel.activeTab === parent.index ? Colors.background : Colors.foreground
+                            font.family: Style.barFont
+                            font.pixelSize: 12
+                            font.weight: Font.Bold
+                            Behavior on color { ColorAnimation { duration: 150 } }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape:  Qt.PointingHandCursor
+                            onClicked:    advPanel.activeTab = index
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle { id: advDivider; width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+
+        // ── Scrollable content ────────────────────────────────────────────
         ScrollView {
             id: scroll
             width:  parent.width
-            height: parent.height - 18 - 16 - 1  // minus header + divider
+            height: parent.height - advHeader.implicitHeight - advTabBar.height - advDivider.height
             clip:   true
 
             ScrollBar.vertical: ScrollBar {
@@ -45,92 +88,60 @@ Panel {
                 }
             }
 
-            Column {
-                width:   scroll.width
-                spacing: 0
-                topPadding: 12
-
-                // ── Bar ───────────────────────────────────────────────────
-                StyleSection { label: "Bar" }
-
-                StyleField {
-                    label:        "Bar Size"
-                    value:        Style.barSize
-                    onCommitted:  (v) => Style.saveSetting("barSize", v)
-                }
-                StyleField {
-                    label:        "Module Size"
-                    value:        Style.moduleSize
-                    onCommitted:  (v) => Style.saveSetting("moduleSize", v)
-                }
-                StyleField {
-                    label:        "Bar Padding"
-                    value:        Style.barPadding
-                    onCommitted:  (v) => Style.saveSetting("barPadding", v)
-                }
-                StyleField {
-                    label:        "Bar Font"
-                    value:        Style.barFont
-                    isText:       true
-                    onCommitted:  (v) => Style.saveSetting("barFont", v)
-                }
-
-                StyleSection { label: "Slots" }
-
-                StyleField {
-                    label:        "Slot Spacing"
-                    value:        Style.slotSpacing
-                    onCommitted:  (v) => Style.saveSetting("slotSpacing", v)
-                }
-
-                StyleSection { label: "Pills" }
-
-                StyleField {
-                    label:        "Pill Padding"
-                    value:        Style.pillPadding
-                    onCommitted:  (v) => Style.saveSetting("pillPadding", v)
-                }
-                StyleField {
-                    label:        "Pill Spacing"
-                    value:        Style.pillSpacing
-                    onCommitted:  (v) => Style.saveSetting("pillSpacing", v)
-                }
-                StyleField {
-                    label:        "Pill Opacity"
-                    value:        Style.pillOpacity
-                    isDecimal:    true
-                    onCommitted:  (v) => Style.saveSetting("pillOpacity", v)
-                }
-
-                StyleSection { label: "Chips" }
-
-                StyleField {
-                    label:        "Chip Spacing"
-                    value:        Style.chipSpacing
-                    onCommitted:  (v) => Style.saveSetting("chipSpacing", v)
-                }
-                StyleField {
-                    label:        "Chip Inner Spacing"
-                    value:        Style.chipInnerSpacing
-                    onCommitted:  (v) => Style.saveSetting("chipInnerSpacing", v)
-                }
-
-                StyleSection { label: "Borders" }
-
-                StyleField {
-                    label:        "Border Width"
-                    value:        Style.borderWidth
-                    onCommitted:  (v) => Style.saveSetting("borderWidth", v)
-                }
-                StyleField {
-                    label:        "Corner Radius"
-                    value:        Style.cornerRadius
-                    onCommitted:  (v) => Style.saveSetting("cornerRadius", v)
-                }
-
-                Item { width: 1; height: 12 }
+            // Loader swaps content between tabs — only one Column exists at
+            // a time so ScrollView always gets the correct content height.
+            Loader {
+                width:           scroll.width
+                sourceComponent: advPanel.activeTab === 0 ? advPanel.navbarTabComp : advPanel.panelsTabComp
             }
         }
+    }
+
+    // ── Tab content components ────────────────────────────────────────────
+    property Component navbarTabComp: Column {
+        width:      parent?.width ?? 0
+        spacing:    0
+        topPadding: 12
+
+        StyleSection { label: "Bar" }
+        StyleField { label: "Bar Size";      value: Style.barSize;    onCommitted: (v) => Style.saveSetting("barSize", v) }
+        StyleField { label: "Module Size";   value: Style.moduleSize; onCommitted: (v) => Style.saveSetting("moduleSize", v) }
+        StyleField { label: "Bar Padding";   value: Style.barPadding; onCommitted: (v) => Style.saveSetting("barPadding", v) }
+        StyleField { label: "Bar Font";      value: Style.barFont;    isText: true; onCommitted: (v) => Style.saveSetting("barFont", v) }
+
+        StyleSection { label: "Slots" }
+        StyleField { label: "Slot Spacing";  value: Style.slotSpacing; onCommitted: (v) => Style.saveSetting("slotSpacing", v) }
+
+        StyleSection { label: "Pills" }
+        StyleField { label: "Pill Padding";  value: Style.pillPadding; onCommitted: (v) => Style.saveSetting("pillPadding", v) }
+        StyleField { label: "Pill Spacing";  value: Style.pillSpacing; onCommitted: (v) => Style.saveSetting("pillSpacing", v) }
+        StyleField { label: "Pill Opacity";  value: Style.pillOpacity; isDecimal: true; onCommitted: (v) => Style.saveSetting("pillOpacity", v) }
+
+        StyleSection { label: "Chips" }
+        StyleField { label: "Chip Spacing";       value: Style.chipSpacing;      onCommitted: (v) => Style.saveSetting("chipSpacing", v) }
+        StyleField { label: "Chip Inner Spacing"; value: Style.chipInnerSpacing; onCommitted: (v) => Style.saveSetting("chipInnerSpacing", v) }
+
+        StyleSection { label: "Borders" }
+        StyleField { label: "Border Width";  value: Style.borderWidth;  onCommitted: (v) => Style.saveSetting("borderWidth", v) }
+        StyleField { label: "Corner Radius"; value: Style.cornerRadius; onCommitted: (v) => Style.saveSetting("cornerRadius", v) }
+
+        Item { width: 1; height: 12 }
+    }
+
+    property Component panelsTabComp: Column {
+        width:      parent?.width ?? 0
+        spacing:    0
+        topPadding: 12
+
+        StyleSection { label: "Size" }
+        StyleField { label: "Panel Width";   value: Style.panelWidth;   onCommitted: (v) => Style.saveSetting("panelWidth", v) }
+        StyleField { label: "Panel Height";  value: Style.panelHeight;  onCommitted: (v) => Style.saveSetting("panelHeight", v) }
+
+        StyleSection { label: "Shape" }
+        StyleField { label: "Panel Radius";  value: Style.panelRadius;  onCommitted: (v) => Style.saveSetting("panelRadius", v) }
+        StyleField { label: "Panel Padding"; value: Style.panelPadding; onCommitted: (v) => Style.saveSetting("panelPadding", v) }
+
+        Item { width: 1; height: 12 }
     }
 
     // ── Section header ────────────────────────────────────────────────────
@@ -168,8 +179,8 @@ Panel {
         id: field
         property string label:     ""
         property var    value:     0
-        property bool   isText:    false   // string input instead of number
-        property bool   isDecimal: false   // allow decimals (e.g. opacity)
+        property bool   isText:    false
+        property bool   isDecimal: false
 
         signal committed(var newValue)
 
@@ -177,7 +188,6 @@ Panel {
         height: 52
 
         Text {
-            id: fieldLabel
             anchors.verticalCenter: parent.verticalCenter
             anchors.left:           parent.left
             anchors.leftMargin:     16
@@ -206,7 +216,7 @@ Panel {
                 anchors.topMargin:    6
                 anchors.bottomMargin: 6
 
-                text:              field.isText ? String(field.value) : String(field.value)
+                text:              String(field.value)
                 color:             Colors.foreground
                 font.family:       Style.barFont
                 font.pixelSize:    13
@@ -217,7 +227,7 @@ Panel {
                 validator: field.isText ? null : field.isDecimal ? decimalValidator : intValidator
 
                 DoubleValidator { id: decimalValidator; bottom: 0; top: 1;   decimals: 2 }
-                IntValidator    { id: intValidator;     bottom: 0; top: 999              }
+                IntValidator    { id: intValidator;     bottom: 0; top: 9999             }
 
                 Keys.onReturnPressed: commit()
                 Keys.onEnterPressed:  commit()

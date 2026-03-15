@@ -14,12 +14,12 @@ import qs.modules.systeminfo
 Panel {
     id: dashboardPanel
 
-    panelWidth:      380
-    panelHeight:     720
+    panelWidth:  Style.panelWidth
+    panelHeight: Style.panelHeight
     animationPreset: "slide"
 
     // QuickToggle width — panel width minus Panel.qml's 25px margins each side
-    readonly property real contentWidth: panelWidth - 50
+    readonly property real contentWidth: panelWidth - (Style.panelPadding * 2)
 
     ScrollView {
         id: scroll
@@ -189,30 +189,46 @@ Panel {
                                     font.pixelSize: 13
                                     font.weight:    Font.Bold
 
-                                    readonly property bool overflows: implicitWidth > titleClip.width
+                                    // Reset and restart whenever title or clip width changes
+                                    onTextChanged:          Qt.callLater(marquee.restart)
+                                    onImplicitWidthChanged: Qt.callLater(marquee.restart)
+                                }
 
-                                    SequentialAnimation on x {
-                                        loops:   Animation.Infinite
-                                        running: titleText.overflows
+                                SequentialAnimation {
+                                    id: marquee
+                                    loops: Animation.Infinite
 
-                                        PauseAnimation  { duration: 1500 }
-                                        // Scroll the full text + gap off to the left
-                                        NumberAnimation {
-                                            from:     0
-                                            to:       -(titleText.implicitWidth + 32)
-                                            duration: Math.max(1, titleText.implicitWidth * 28)
-                                            easing.type: Easing.Linear
-                                        }
-                                        // Instantly place back at right edge of clip so it feels seamless
-                                        PropertyAction  { value: titleClip.width }
-                                        // Scroll from right edge back to 0
-                                        NumberAnimation {
-                                            to:       0
-                                            duration: Math.max(1, titleClip.width * 28)
-                                            easing.type: Easing.Linear
-                                        }
+                                    function restart() {
+                                        stop()
+                                        titleText.x = 0
+                                        // Guard: only scroll if text is actually wider than the clip
+                                        if (titleClip.width > 0 && titleText.implicitWidth > titleClip.width)
+                                            start()
+                                    }
+
+                                    PauseAnimation  { duration: 1500 }
+                                    NumberAnimation {
+                                        target:   titleText
+                                        property: "x"
+                                        from:     0
+                                        to:       -(titleText.implicitWidth + 32)
+                                        duration: Math.max(1, titleText.implicitWidth * 28)
+                                        easing.type: Easing.Linear
+                                    }
+                                    PauseAnimation  { duration: 800 }
+                                    ScriptAction    { script: titleText.x = titleClip.width }
+                                    NumberAnimation {
+                                        target:   titleText
+                                        property: "x"
+                                        from:     titleClip.width
+                                        to:       0
+                                        duration: Math.max(1, titleClip.width * 28)
+                                        easing.type: Easing.Linear
                                     }
                                 }
+
+                                // Defer initial check so layout is fully settled
+                                Component.onCompleted: Qt.callLater(marquee.restart)
                             }
 
                             Text {

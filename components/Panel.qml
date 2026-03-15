@@ -11,15 +11,15 @@ Scope {
     property bool   showPanel:       false
     property string panelId:         ""
     property var    targetScreen:    null
-    property real   panelWidth:      400
-    property real   panelHeight:     400
+    property real   panelWidth:      Style.panelWidth
+    property real   panelHeight:     Style.panelHeight
     property real   navbarOffset:    0
     property real   visualGap:       0
     property int    keyboardFocus:   WlrKeyboardFocus.OnDemand
     property string animationPreset: "slide"
 
     readonly property real tensionRadius: 20
-    readonly property real panelRadius:   20
+    readonly property real panelRadius:   Style.panelRadius
     readonly property bool isHorizontal:  Config.isHorizontal
 
     // The bar edge the panel slides in from — drives AnimatedElement.edge
@@ -151,7 +151,7 @@ Scope {
                 // ── Panel content ─────────────────────────────────────────
                 Item {
                     anchors.fill:    parent
-                    anchors.margins: 25
+                    anchors.margins: Style.panelPadding
                     clip: true
 
                     Loader {
