@@ -8,8 +8,8 @@ import qs.globals
 Panel {
     id: advPanel
 
-    panelWidth:  420
-    panelHeight: 580
+    panelWidth:  380
+    panelHeight: 600
 
     Column {
         anchors.fill: parent

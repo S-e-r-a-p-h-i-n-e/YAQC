@@ -7,6 +7,7 @@ Item {
     id: root
     property bool isHorizontal: Config.isHorizontal
     property real barThickness: Style.moduleSize
+    property var  barScreen:    null
 
     readonly property string timeHour: Clock.time.split(":")[0] ?? ""
     readonly property string timeMin:  Clock.time.split(":")[1] ?? ""

@@ -22,15 +22,17 @@ Scope {
     readonly property real panelRadius:   20
     readonly property bool isHorizontal:  Config.isHorizontal
 
+    // The bar edge the panel slides in from — drives AnimatedElement.edge
+    readonly property string barEdge: Config.navbarLocation
+
     default property Component panelContent
 
-    property real animProgress: rootScope.showPanel ? 1.0 : 0.0
-    Behavior on animProgress { NumberAnimation { duration: 500; easing.type: Easing.OutCubic } }
-
-    readonly property real maxSlidePx: isHorizontal ? rootScope.panelHeight : rootScope.panelWidth
-    readonly property real exposedPx:  maxSlidePx * animProgress
-    readonly property real filletOffset: rootScope.animationPreset === "slide"
-        ? Math.max(0, rootScope.panelRadius - rootScope.exposedPx + 8)
+    // Fillet offset — how far the tension corner shapes lead the panel edge
+    // during the slide-in. Driven by AnimatedElement's exposed animProgress.
+    readonly property real maxSlidePx:   isHorizontal ? panelHeight : panelWidth
+    readonly property real exposedPx:    maxSlidePx * (typeof animator !== "undefined" ? animator.animProgress : 0)
+    readonly property real filletOffset: animationPreset === "slide"
+        ? Math.max(0, panelRadius - exposedPx + 8)
         : 0
 
     Variants {
@@ -72,7 +74,10 @@ Scope {
             required property var modelData
             screen: modelData
 
-            visible: rootScope.animProgress > 0.01 && (!rootScope.targetScreen || rootScope.targetScreen.name === modelData.name)
+            readonly property bool isTargetScreen: !rootScope.targetScreen || rootScope.targetScreen.name === modelData.name
+
+            // Stay alive while AnimatedElement is still fading out
+            visible: animator.isSurfaceVisible && isTargetScreen
             color:   "transparent"
 
             WlrLayershell.layer:         WlrLayer.Top
@@ -102,76 +107,66 @@ Scope {
                 ? rootScope.panelHeight + (rootScope.tensionRadius * 2)
                 : rootScope.panelHeight
 
-            Item {
+            // ── AnimatedElement ───────────────────────────────────────────
+            // All show/hide animation lives here — Panel.qml just flips
+            // animator.show and everything else follows.
+            AnimatedElement {
+                id: animator
                 anchors.fill: parent
-                clip: true
 
+                // Only animate on the target screen so isSurfaceVisible
+                // doesn't stay true on non-target screens
+                show:   rootScope.showPanel && isTargetScreen
+                preset: rootScope.animationPreset
+                edge:   rootScope.barEdge
+
+                // ── Panel background ──────────────────────────────────────
+                Rectangle {
+                    id: bg
+                    color:        Config.transparentNavbar
+                                  ? Qt.rgba(Colors.background.r, Colors.background.g, Colors.background.b, 0.01)
+                                  : Colors.background
+                    radius:       rootScope.panelRadius
+                    border.width: Config.transparentNavbar ? 1 : 0
+                    border.color: Config.transparentNavbar ? Qt.rgba(1, 1, 1, 0.15) : "transparent"
+
+                    Behavior on color        { ColorAnimation  { duration: Animations.normal; easing.type: Animations.easeInOut } }
+                    Behavior on border.color { ColorAnimation  { duration: Animations.normal; easing.type: Animations.easeInOut } }
+                    Behavior on border.width { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+
+                    anchors {
+                        fill:         parent
+                        topMargin:    (!Config.transparentNavbar && Config.navbarLocation === "top")    ? -radius : 0
+                        bottomMargin: (!Config.transparentNavbar && Config.navbarLocation === "bottom") ? -radius : 0
+                        leftMargin:   (!Config.transparentNavbar && Config.navbarLocation === "left")   ? -radius : 0
+                        rightMargin:  (!Config.transparentNavbar && Config.navbarLocation === "right")  ? -radius : 0
+                    }
+
+                    Behavior on anchors.topMargin    { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+                    Behavior on anchors.bottomMargin { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+                    Behavior on anchors.leftMargin   { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+                    Behavior on anchors.rightMargin  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+                }
+
+                // ── Panel content ─────────────────────────────────────────
                 Item {
-                    id: movingPanel
-                    width:  rootScope.panelWidth
-                    height: rootScope.panelHeight
-                    anchors.left:             Config.navbarLocation === "left"   ? parent.left   : undefined
-                    anchors.right:            Config.navbarLocation === "right"  ? parent.right  : undefined
-                    anchors.top:              Config.navbarLocation === "top"    ? parent.top    : undefined
-                    anchors.bottom:           Config.navbarLocation === "bottom" ? parent.bottom : undefined
-                    anchors.horizontalCenter: Config.isHorizontal ? parent.horizontalCenter : undefined
-                    anchors.verticalCenter:   Config.isHorizontal ? undefined : parent.verticalCenter
+                    anchors.fill:    parent
+                    anchors.margins: 25
+                    clip: true
 
-                    opacity: rootScope.animationPreset === "fade"  ? rootScope.animProgress : 1.0
-                    scale:   rootScope.animationPreset === "scale" ? 0.9 + (0.1 * rootScope.animProgress) : 1.0
-
-                    transform: Translate {
-                        property real offset: rootScope.animationPreset === "slide"
-                            ? (rootScope.maxSlidePx * (1.0 - rootScope.animProgress))
-                            : 0
-                        x: Config.navbarLocation === "left"  ? -offset
-                         : Config.navbarLocation === "right" ?  offset : 0
-                        y: Config.navbarLocation === "top"   ? -offset
-                         : Config.navbarLocation === "bottom"?  offset : 0
-                    }
-
-                    Rectangle {
-                        id: bg
-                        color:        Config.transparentNavbar ? Qt.rgba(Colors.background.r, Colors.background.g, Colors.background.b, 0.01) : Colors.background
-                        radius:       rootScope.panelRadius
-                        border.width: Config.transparentNavbar ? 1 : 0
-                        border.color: Config.transparentNavbar ? Qt.rgba(1, 1, 1, 0.15) : "transparent"
-
-                        Behavior on color        { ColorAnimation  { duration: Animations.normal; easing.type: Animations.easeInOut } }
-                        Behavior on border.color { ColorAnimation  { duration: Animations.normal; easing.type: Animations.easeInOut } }
-                        Behavior on border.width { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
-
-                        anchors {
-                            fill:         parent
-                            topMargin:    (!Config.transparentNavbar && Config.navbarLocation === "top")    ? -radius : 0
-                            bottomMargin: (!Config.transparentNavbar && Config.navbarLocation === "bottom") ? -radius : 0
-                            leftMargin:   (!Config.transparentNavbar && Config.navbarLocation === "left")   ? -radius : 0
-                            rightMargin:  (!Config.transparentNavbar && Config.navbarLocation === "right")  ? -radius : 0
-                        }
-
-                        Behavior on anchors.topMargin    { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
-                        Behavior on anchors.bottomMargin { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
-                        Behavior on anchors.leftMargin   { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
-                        Behavior on anchors.rightMargin  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
-                    }
-
-                    Item {
+                    Loader {
                         anchors.fill:    parent
-                        anchors.margins: 25
-                        clip: true
-
-                        Loader {
-                            anchors.fill:    parent
-                            sourceComponent: rootScope.panelContent
-                        }
+                        sourceComponent: rootScope.panelContent
                     }
                 }
 
-                // Tension fillets — keep corners looking seamless when panel slides in
+                // ── Tension fillets ───────────────────────────────────────
+                // Keep bar/panel corner join seamless during slide-in.
+                // Hidden in transparent mode since there's no solid bar to blend into.
                 Item {
                     anchors.fill: parent
-                    visible: rootScope.animationPreset === "slide" && rootScope.animProgress > 0
-                    opacity: Config.transparentNavbar ? 0.0 : 1.0
+                    visible:      rootScope.animationPreset === "slide"
+                    opacity:      Config.transparentNavbar ? 0.0 : 1.0
                     Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
 
                     transform: Translate {

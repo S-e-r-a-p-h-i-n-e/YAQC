@@ -8,8 +8,8 @@ import qs.globals
 Panel {
     id: settingsPanel
 
-    panelWidth:  420
-    panelHeight: 560
+    panelWidth:  380
+    panelHeight: 600
 
     property bool bordersEnabled: Config.enableBorders
 
