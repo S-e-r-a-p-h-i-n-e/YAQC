@@ -1,6 +1,6 @@
 {
   "barSize": 30,
-  "moduleSize": 24,
+  "moduleSize": 20,
   "barFont": "JetBrainsMono Nerd Font",
   "barPadding": 20,
   "slotSpacing": 8,
@@ -11,8 +11,8 @@
   "chipInnerSpacing": 5,
   "panelWidth": 380,
   "panelHeight": 760,
-  "panelRadius": 20,
+  "panelRadius": 15,
   "panelPadding": 25,
-  "borderWidth": 20,
+  "borderWidth": 15,
   "cornerRadius": 15
 }

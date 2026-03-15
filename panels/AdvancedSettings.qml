@@ -122,8 +122,8 @@ Panel {
         StyleField { label: "Chip Inner Spacing"; value: Style.chipInnerSpacing; onCommitted: (v) => Style.saveSetting("chipInnerSpacing", v) }
 
         StyleSection { label: "Borders" }
-        StyleField { label: "Border Width";  value: Style.borderWidth;  onCommitted: (v) => Style.saveSetting("borderWidth", v) }
-        StyleField { label: "Corner Radius"; value: Style.cornerRadius; onCommitted: (v) => Style.saveSetting("cornerRadius", v) }
+        StyleField { label: "Border Width";  value: Style.borderWidth;  disabled: Config.transparentNavbar; onCommitted: (v) => Style.saveSetting("borderWidth", v) }
+        StyleField { label: "Corner Radius"; value: Style.cornerRadius; disabled: Config.transparentNavbar; onCommitted: (v) => Style.saveSetting("cornerRadius", v) }
 
         Item { width: 1; height: 12 }
     }
@@ -181,6 +181,10 @@ Panel {
         property var    value:     0
         property bool   isText:    false
         property bool   isDecimal: false
+        property bool   disabled:  false
+
+        opacity: disabled ? 0.35 : 1.0
+        Behavior on opacity { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
 
         signal committed(var newValue)
 
@@ -222,6 +226,7 @@ Panel {
                 font.pixelSize:    13
                 verticalAlignment: TextInput.AlignVCenter
                 selectByMouse:     true
+                readOnly:          field.disabled
                 clip:              true
 
                 validator: field.isText ? null : field.isDecimal ? decimalValidator : intValidator

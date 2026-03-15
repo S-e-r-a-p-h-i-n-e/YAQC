@@ -22,11 +22,31 @@ Scope {
     property real animatedAlpha: border.enabled ? 1.0 : 0.0
     Behavior on animatedAlpha { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
 
+    // borderWidth animates to 0 when disabled, but cornerRadius always stays
+    // active so the screen corners are always rounded regardless of border state.
+    property real animatedBorderWidth:  border.enabled ? border.borderWidth : 0
+    property real animatedCornerRadius: border.cornerRadius
+    Behavior on animatedBorderWidth  { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+    Behavior on animatedCornerRadius { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+
     readonly property color animatedColor: Qt.rgba(
         borderColor.r,
         borderColor.g,
         borderColor.b,
         animatedAlpha * borderColor.a
+    )
+
+    // Corners always stay fully opaque — they persist even when borders are
+    // disabled to keep the screen corners rounded at all times.
+    // Exception: transparent mode hides them since there's no solid bar to blend into.
+    property real animatedCornerAlpha: Config.transparentNavbar ? 0.0 : borderColor.a
+    Behavior on animatedCornerAlpha { NumberAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
+
+    readonly property color animatedCornerColor: Qt.rgba(
+        borderColor.r,
+        borderColor.g,
+        borderColor.b,
+        animatedCornerAlpha
     )
 
     Variants {
@@ -40,67 +60,67 @@ Scope {
             PanelWindow {
                 screen:         currentScreen
                 anchors { top: true; left: true; right: true }
-                implicitHeight: border.borderWidth
+                implicitHeight: border.animatedBorderWidth
                 color:          border.animatedColor
-                visible:        border.animatedAlpha > 0 && border.location !== "top"
+                visible: border.animatedAlpha > 0 && border.animatedBorderWidth > 0 && border.location !== "top"
             }
             PanelWindow {
                 screen:        currentScreen
                 anchors { top: true; left: true; bottom: true }
-                implicitWidth: border.borderWidth
+                implicitWidth: border.animatedBorderWidth
                 color:         border.animatedColor
-                visible:       border.animatedAlpha > 0 && border.location !== "left"
+                visible:       border.animatedAlpha > 0 && border.animatedBorderWidth > 0 && border.location !== "left"
             }
             PanelWindow {
                 screen:         currentScreen
                 anchors { bottom: true; left: true; right: true }
-                implicitHeight: border.borderWidth
+                implicitHeight: border.animatedBorderWidth
                 color:          border.animatedColor
-                visible:        border.animatedAlpha > 0 && border.location !== "bottom"
+                visible:        border.animatedAlpha > 0 && border.animatedBorderWidth > 0 && border.location !== "bottom"
             }
             PanelWindow {
                 screen:        currentScreen
                 anchors { top: true; right: true; bottom: true }
-                implicitWidth: border.borderWidth
+                implicitWidth: border.animatedBorderWidth
                 color:         border.animatedColor
-                visible:       border.animatedAlpha > 0 && border.location !== "right"
+                visible:       border.animatedAlpha > 0 && border.animatedBorderWidth > 0 && border.location !== "right"
             }
 
             // ── corners ───────────────────────────────────────────────────
             PanelWindow {
                 screen: currentScreen
                 anchors { top: true; left: true }
-                implicitHeight: border.cornerRadius
-                implicitWidth:  border.cornerRadius
+                implicitHeight: border.animatedCornerRadius
+                implicitWidth:  border.animatedCornerRadius
                 color:   "transparent"
-                visible: border.animatedAlpha > 0
+                visible: border.animatedCornerRadius > 0 && !Config.transparentNavbar
                 Shape {
-                    width: border.cornerRadius; height: border.cornerRadius
+                    width: border.animatedCornerRadius; height: border.animatedCornerRadius
                     preferredRendererType: Shape.CurveRenderer
                     ShapePath {
-                        strokeWidth: 0; fillColor: border.animatedColor
-                        startX: 0; startY: border.cornerRadius
-                        PathArc  { x: border.cornerRadius; y: 0; radiusX: border.cornerRadius; radiusY: border.cornerRadius; direction: PathArc.Clockwise }
+                        strokeWidth: 0; fillColor: border.animatedCornerColor
+                        startX: 0; startY: border.animatedCornerRadius
+                        PathArc  { x: border.animatedCornerRadius; y: 0; radiusX: border.animatedCornerRadius; radiusY: border.animatedCornerRadius; direction: PathArc.Clockwise }
                         PathLine { x: 0; y: 0 }
-                        PathLine { x: 0; y: border.cornerRadius }
+                        PathLine { x: 0; y: border.animatedCornerRadius }
                     }
                 }
             }
             PanelWindow {
                 screen: currentScreen
                 anchors { top: true; right: true }
-                implicitHeight: border.cornerRadius
-                implicitWidth:  border.cornerRadius
+                implicitHeight: border.animatedCornerRadius
+                implicitWidth:  border.animatedCornerRadius
                 color:   "transparent"
-                visible: border.animatedAlpha > 0
+                visible: border.animatedCornerRadius > 0 && !Config.transparentNavbar
                 Shape {
-                    width: border.cornerRadius; height: border.cornerRadius
+                    width: border.animatedCornerRadius; height: border.animatedCornerRadius
                     preferredRendererType: Shape.CurveRenderer
                     ShapePath {
-                        strokeWidth: 0; fillColor: border.animatedColor
+                        strokeWidth: 0; fillColor: border.animatedCornerColor
                         startX: 0; startY: 0
-                        PathArc  { x: border.cornerRadius; y: border.cornerRadius; radiusX: border.cornerRadius; radiusY: border.cornerRadius; direction: PathArc.Clockwise }
-                        PathLine { x: border.cornerRadius; y: 0 }
+                        PathArc  { x: border.animatedCornerRadius; y: border.animatedCornerRadius; radiusX: border.animatedCornerRadius; radiusY: border.animatedCornerRadius; direction: PathArc.Clockwise }
+                        PathLine { x: border.animatedCornerRadius; y: 0 }
                         PathLine { x: 0; y: 0 }
                     }
                 }
@@ -108,38 +128,38 @@ Scope {
             PanelWindow {
                 screen: currentScreen
                 anchors { bottom: true; left: true }
-                implicitHeight: border.cornerRadius
-                implicitWidth:  border.cornerRadius
+                implicitHeight: border.animatedCornerRadius
+                implicitWidth:  border.animatedCornerRadius
                 color:   "transparent"
-                visible: border.animatedAlpha > 0
+                visible: border.animatedCornerRadius > 0 && !Config.transparentNavbar
                 Shape {
-                    width: border.cornerRadius; height: border.cornerRadius
+                    width: border.animatedCornerRadius; height: border.animatedCornerRadius
                     preferredRendererType: Shape.CurveRenderer
                     ShapePath {
-                        strokeWidth: 0; fillColor: border.animatedColor
-                        startX: border.cornerRadius; startY: border.cornerRadius
-                        PathArc  { x: 0; y: 0; radiusX: border.cornerRadius; radiusY: border.cornerRadius; direction: PathArc.Clockwise }
-                        PathLine { x: 0; y: border.cornerRadius }
-                        PathLine { x: border.cornerRadius; y: border.cornerRadius }
+                        strokeWidth: 0; fillColor: border.animatedCornerColor
+                        startX: border.animatedCornerRadius; startY: border.animatedCornerRadius
+                        PathArc  { x: 0; y: 0; radiusX: border.animatedCornerRadius; radiusY: border.animatedCornerRadius; direction: PathArc.Clockwise }
+                        PathLine { x: 0; y: border.animatedCornerRadius }
+                        PathLine { x: border.animatedCornerRadius; y: border.animatedCornerRadius }
                     }
                 }
             }
             PanelWindow {
                 screen: currentScreen
                 anchors { bottom: true; right: true }
-                implicitHeight: border.cornerRadius
-                implicitWidth:  border.cornerRadius
+                implicitHeight: border.animatedCornerRadius
+                implicitWidth:  border.animatedCornerRadius
                 color:   "transparent"
-                visible: border.animatedAlpha > 0
+                visible: border.animatedCornerRadius > 0 && !Config.transparentNavbar
                 Shape {
-                    width: border.cornerRadius; height: border.cornerRadius
+                    width: border.animatedCornerRadius; height: border.animatedCornerRadius
                     preferredRendererType: Shape.CurveRenderer
                     ShapePath {
-                        strokeWidth: 0; fillColor: border.animatedColor
-                        startX: 0; startY: border.cornerRadius
-                        PathLine { x: border.cornerRadius; y: border.cornerRadius }
-                        PathLine { x: border.cornerRadius; y: 0 }
-                        PathArc  { x: 0; y: border.cornerRadius; radiusX: border.cornerRadius; radiusY: border.cornerRadius; direction: PathArc.Clockwise }
+                        strokeWidth: 0; fillColor: border.animatedCornerColor
+                        startX: 0; startY: border.animatedCornerRadius
+                        PathLine { x: border.animatedCornerRadius; y: border.animatedCornerRadius }
+                        PathLine { x: border.animatedCornerRadius; y: 0 }
+                        PathArc  { x: 0; y: border.animatedCornerRadius; radiusX: border.animatedCornerRadius; radiusY: border.animatedCornerRadius; direction: PathArc.Clockwise }
                     }
                 }
             }
