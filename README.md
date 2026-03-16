@@ -1,49 +1,176 @@
-<div align="center">
- 
-# NeKoRoSHELL DLux (Shell)
+# YAQC
 
-![GitHub Repo stars](https://img.shields.io/github/stars/NeKoRoSYS/NeKoRoSHELL-DLux-Shell?style=for-the-badge&color=%23FFD700) ![Size](https://img.shields.io/github/repo-size/NeKoRoSYS/NeKoRoSHELL-DLux-Shell?style=for-the-badge) ![GitHub last commit](https://img.shields.io/github/last-commit/NeKoRoSYS/NeKoRoSHELL-DLux-Shell?style=for-the-badge) ![GitHub contributors](https://img.shields.io/github/contributors/NeKoRoSYS/NeKoRoSHELL-DLux-Shell?style=for-the-badge) ![Discord](https://img.shields.io/discord/774473787394752532?style=for-the-badge&label=Discord&color=%235865F2)
- <br>
- <br>
+### Yet Another Quickshell Configuration
 
-</div>
+YAQC is a **modular, layout-driven Quickshell configuration** designed around separation of concerns and composable UI systems.
 
-The best way to say "I use Linux btw 🤓" is if your desktop environment looks sleek and suave.
+The project originally started as a **fork**, but has since evolved into its own architecture focused on:
 
-Powered by Hyprland and Quickshell, **NeKoRoSHELL DLux** strives to achieve what its predecessor could not; all while maintaining core philosophies and robustness.
+* layout-driven UI construction
+* modular system widgets
+* reusable UI components
+* clean separation between structure and functionality
 
-**This repo only contains the files for `.config/quickshell/`. If you want the actual dotfiles, [check them out here](https://github.io/NeKoRoSYS/NeKoRoSHELL-DLux-Shell)**
+Instead of hardcoding UI structure in QML, YAQC treats the shell more like a **runtime UI engine** that assembles the interface dynamically.
 
-<br>
+---
 
-### Roadmap
+## 📜 Philosophy
 
-NeKoRoSHELL DLux is currently being developed by one person (*cough* [CONTRIBUTING](https://github.com/NeKoRoSYS/NeKoRoSHELL-DLux-Shell/tree/main?tab=contributing-ov-file#) *cough*) and is constantly under rigorous quality assurance for improvement. We always aim to keep a "no-break" promise for every update so that you can safely update to later versions without expecting any breakages.
+YAQC follows a few key ideas:
 
-<br>
+### Layouts are data
+
+UI structure is defined through **layout definitions**, not hardcoded QML.
+
+This allows:
+
+* multiple layouts
+* quick experimentation
+* cleaner UI logic
+
+---
+
+### Modules are self-contained
+
+Modules provide **functionality**, not layout control.
+
+Examples:
+
+* clock
+* media player
+* workspaces
+* system controls
+
+Modules can be placed anywhere in a layout without modification.
+
+---
+
+### Components are reusable primitives
+
+Components act as the shell’s **UI toolkit**, providing shared building blocks used across modules.
+
+Examples include buttons, toggles, panels, and animated elements.
+
+---
+
+### The shell is an assembly system
+
+Rather than defining a static UI, the shell dynamically builds the interface by loading:
+
+1. layouts
+2. modules
+3. components
+
+This allows the interface to behave more like a **composable system** than a fixed bar configuration.
+
+---
+
+## 🛠️ Features
+
+* Layout-driven interface
+* Modular widget system
+* Dynamic module loading
+* Reusable UI components
+* Multiple layout support
+* Panels for extended interfaces
+* Clean and maintainable project structure
+
+---
+
+## 🎯 Project Goals
+
 <div align="center">
 
 | 📋 **TODO** | **STATUS** |
 | :---: | :---: |
-| Improve base theme | 🛠 |
 | Replace waybar | ✅ |
 | Replace rofi | 🛠 |
 | Replace wlogout | 🛠 |
-| Replace hyprlock / swaylock | 🛠 |
 | Replace SwayNC | 🛠 |
+| Port all necessary bash scripts into native QML modules/functionality | ⏳ |
 
 </div>
-<br>
 
-## Star History
-<br>
+---
 
-<div align="center">
-<a href="https://www.star-history.com/#nekorosys/NeKoRoSHELL-DLux-Shell&type=date&legend=bottom-right">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=nekorosys/NeKoRoSHELL-DLux-Shell&type=date&theme=dark&legend=bottom-right" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=nekorosys/NeKoRoSHELL-DLux-Shell&type=date&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=nekorosys/NeKoRoSHELL-DLux-Shell&type=date&legend=bottom-right" />
- </picture>
-</a>
-</div>
+## 🌲 Project Structure
+
+```
+quickshell/
+├ components/   # reusable UI elements
+├ engine/       # layout engine and module loading
+├ globals/      # shared services and configuration
+├ layouts/      # layout definitions
+├ modules/      # functional UI widgets
+├ panels/       # dashboard / overlay panels
+├ shell/        # shell entry point
+│
+├ config.json
+├ style.json
+└ shell.qml
+```
+
+A full explanation of how these parts interact is documented in:
+
+**[Docs/ARCHITECTURE.md](https://github.com/S-e-r-a-p-h-i-n-e/YAQC/blob/main/Docs/ARCHITECTURE.md)**
+
+---
+
+## ⚙️ Configuration
+
+YAQC exposes configuration through JSON files.
+
+### `config.json`
+
+Controls shell behaviour.
+
+Examples:
+
+* active layout
+* feature toggles
+* behaviour settings
+
+---
+
+### `style.json`
+
+Controls appearance.
+
+Examples:
+
+* spacing
+* colors
+* sizing
+* UI scaling
+
+---
+
+## 📝 Documentation
+
+The architecture and internal design of the system are documented in:
+
+**[Docs/ARCHITECTURE.md](https://github.com/S-e-r-a-p-h-i-n-e/YAQC/blob/main/Docs/ARCHITECTURE.md)**
+
+This includes:
+
+* layout engine internals
+* module system
+* component hierarchy
+* shell initialization
+
+---
+
+## 📊 Project Status
+
+YAQC began as a fork but has since diverged significantly in structure and design.
+
+The project now serves as an exploration of how a **Quickshell configuration can be structured as a modular UI system** rather than a single static layout.
+
+---
+
+## 🤍 Credits
+
+Big Thanks to:
+
+* **[NeKoRoSyS](https://github.com/NeKoRoSYS)** for starting this project and being collaborative, the amount of ideas you have for both our projects is honestly insane and commendable
