@@ -33,13 +33,12 @@ Scope {
 
         // Explicit type annotations (: void) are REQUIRED for Quickshell IPC!
         function toggle(): void {
-            EventBus.togglePanel("launcher", null) // <-- Added null here
+            EventBus.togglePanel("launcher", null)
         }
 
-        // You can easily add more commands here later!
         function close(): void {
             if (shell.activePanel === "launcher") {
-                EventBus.togglePanel("launcher", null) // <-- And added null here
+                EventBus.togglePanel("launcher", null)
             }
         }
     }
@@ -69,7 +68,7 @@ Scope {
         function toggle(): void { EventBus.togglePanel("theming", null) }
         function close(): void {
             if (shell.activePanel === "theming") {
-                EventBus.togglePanel("theming", null) // <-- And added null here
+                EventBus.togglePanel("theming", null)
             }
         }
     }
@@ -85,8 +84,6 @@ Scope {
     }
 
     // Extend Qt's icon search paths to match what GTK/Waybar searches automatically.
-    // Qt's image://icon/ provider only searches theme paths it knows at startup —
-    // this adds pixmaps and user-local icon dirs so AUR packages resolve correctly.
     Component.onCompleted: {
         let extra = [
             "/usr/share/pixmaps",
@@ -98,6 +95,9 @@ Scope {
                 Qt.iconSearchPaths = (Qt.iconSearchPaths ?? []).concat([p])
         }
     }
+
+    // ── Wallpaper — self-contained, handles its own Variants internally ──
+    WallpaperWindow {}
 
     LayoutLoader { id: loader }
 
@@ -151,7 +151,6 @@ Scope {
         navbarOffset:   loader.barSize
         bordersEnabled: Config.enableBorders
     }
-
 
     AdvancedSettings {
         showPanel:    shell.activePanel === "advanced"

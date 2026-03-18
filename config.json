@@ -1,7 +1,8 @@
 {
   "navbarLocation": "bottom",
   "enableBorders": false,
-  "transparentNavbar": false,
+  "transparentNavbar": true,
   "activeLayout": "09",
-  "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"wallchange\",\"settings\",\"power\"]"
+  "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"wallchange\",\"settings\",\"power\"]",
+  "wallpaperPath": "/home/amelie/.config/quickshell/wallpapers/Délivrance ｜｜ Emotional Instrumental Music ｜｜ S7ven Dark Ambience ｜｜ @amavaarts [9ICX4J189Gw].webm"
 }

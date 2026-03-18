@@ -50,7 +50,7 @@ Item {
             font.pixelSize: root.barThickness * 0.6
             color:          root.item.active
                 ? Colors.color3
-                : (root.item.fgColor ?? Colors.color3)
+                : (root.item.fgColor ?? Colors.color0)
         }
 
         MouseArea {

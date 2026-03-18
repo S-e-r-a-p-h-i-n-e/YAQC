@@ -84,11 +84,13 @@ This allows the interface to behave more like a **composable system** than a fix
 
 | 📋 **TODO** | **STATUS** |
 | :---: | :---: |
+| Replace swww | ✅ |
+| Replace mpvpaper | ✅ |
 | Replace waybar | ✅ |
 | Replace rofi | ✅ |
 | Replace wlogout | ✅ |
 | Replace SwayNC | ✅ |
-| Port all necessary bash scripts into native QML modules/functionality | ⏳ |
+| Port all necessary bash scripts into native QML modules/functionality | ✅ |
 
 </div>
 
@@ -118,32 +120,42 @@ A full explanation of how these parts interact is documented in:
 ---
 
 ## ⚙️ Configuration
-
-YAQC exposes configuration through JSON files.
-
-### `config.json`
-
-Controls shell behaviour.
-
-Examples:
-
-* active layout
-* feature toggles
-* behaviour settings
-
----
-
-### `style.json`
-
-Controls appearance.
-
-Examples:
-
-* spacing
-* colors
-* sizing
-* UI scaling
-
+ 
+Both config files live-reload via `FileView` — changes take effect immediately without restarting.
+ 
+### `config.json` — behaviour
+ 
+| Key                | Description                                          |
+|--------------------|------------------------------------------------------|
+| `navbarLocation`   | Bar position: `top`, `bottom`, `left`, `right`       |
+| `enableBorders`    | Whether screen border decorations are shown          |
+| `transparentNavbar`| Whether the bar background is transparent           |
+| `activeLayout`     | Which file in `layouts/` to load                    |
+| `dashboardLayout`  | JSON string defining dashboard widget order         |
+| `wallpaperPath`    | Path to the current wallpaper (set by the engine)   |
+ 
+### `style.json` — appearance
+ 
+| Key               | Description                                        |
+|-------------------|----------------------------------------------------|
+| `barSize`         | Full bar thickness in px                           |
+| `moduleSize`      | Thickness of individual modules/chips              |
+| `barFont`         | Font family used across all bar text               |
+| `barPadding`      | Margin between bar edge and first module           |
+| `slotSpacing`     | Gap between modules within a slot                  |
+| `pillPadding`     | Padding inside a pill group                        |
+| `pillSpacing`     | Gap between modules inside a pill group            |
+| `pillOpacity`     | Background opacity of pill groups                  |
+| `pillRadius`      | Corner radius of pill groups (999 = fully round)   |
+| `chipSpacing`     | Gap between chip items in DynamicChip              |
+| `chipInnerSpacing`| Gap between icon and label inside a chip           |
+| `borderWidth`     | Thickness of screen border edges                   |
+| `cornerRadius`    | Radius of screen border corners                    |
+| `panelWidth`      | Width of overlay panels in px                      |
+| `panelHeight`     | Height of overlay panels in px                     |
+| `panelRadius`     | Corner radius of overlay panels                    |
+| `panelPadding`    | Inner padding of overlay panels                    |
+ 
 ---
 
 ## 📝 Documentation

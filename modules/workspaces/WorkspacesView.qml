@@ -20,17 +20,6 @@ Item {
     implicitWidth:  isHorizontal ? (container.implicitWidth  + dotSize * 0.6) : barThickness
     implicitHeight: isHorizontal ? barThickness                                : (container.implicitHeight + dotSize * 0.6)
 
-    // Pill background spanning the whole workspace cluster
-    Rectangle {
-        visible: !root.inPill
-        anchors.centerIn: parent
-        width:  root.isHorizontal ? (container.implicitWidth + dotSize * 0.6) : root.barThickness
-        height: root.isHorizontal ? root.barThickness                          : (container.implicitHeight + dotSize * 0.6)
-        radius: (root.isHorizontal ? height : width) / 2
-        color:   Colors.color7
-        opacity: 0.325
-    }
-
     Grid {
         id: container
         anchors.centerIn: parent
@@ -153,7 +142,7 @@ Item {
                             radius: height / 2
                             color:  appArea.containsMouse
                                 ? Colors.foreground
-                                : (appDot.isFocused ? Colors.color3 : Colors.color7)
+                                : (appDot.isFocused ? Colors.color0 : Colors.color7)
                             Behavior on color { ColorAnimation { duration: 150 } }
 
                             Text {
@@ -163,7 +152,7 @@ Item {
                                 text:           Workspaces.iconFor(appDot.modelData)
                                 color:          appArea.containsMouse
                                     ? Colors.background
-                                    : (appDot.isFocused ? Colors.color7 : Colors.color3)
+                                    : (appDot.isFocused ? Colors.color7 : Colors.color0)
                                 Behavior on color { ColorAnimation { duration: 150 } }
                                 font.family:    Style.barFont
                                 font.pixelSize: root.iconSize

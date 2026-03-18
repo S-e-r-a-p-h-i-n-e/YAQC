@@ -1,22 +1,20 @@
-// quickshell/engine/WallpaperEngine.qml
+// engine/WallpaperEngine.qml
+// Native wallpaper engine — no swww or mpvpaper dependency.
+// Rendering is handled by WallpaperWindow (engine/WallpaperWindow.qml).
 pragma Singleton
 
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.globals
 
 Singleton {
     id: root
 
+    // ── File discovery ────────────────────────────────────────────────────
     property var wallpapers: []
-    readonly property string wallDir: Quickshell.env("HOME") + "/wallpapers" // Replace with your own wallpaper path
-
-    // Track which backend is currently active so we can tear it down cleanly
-    // before switching: "swww" | "mpvpaper" | ""
-    property string activeBackend: ""
-
-    // Video extensions handled by mpvpaper
-    readonly property var videoExts: ["mp4", "webm", "mkv", "mov", "avi"]
+    readonly property string wallDir: Quickshell.env("HOME") + "/.config/quickshell/wallpapers"
+    readonly property var    videoExts: ["mp4", "webm", "mkv", "mov", "avi"]
 
     function isVideo(path) {
         let ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase()
@@ -33,18 +31,17 @@ Singleton {
             "-iname \\*.mp4 -o -iname \\*.webm -o -iname \\*.mkv -o " +
             "-iname \\*.mov -o -iname \\*.avi \\)"
         ]
-
         stdout: StdioCollector {
             onStreamFinished: {
-                let files = this.text.split('\n').filter(p => p.trim().length > 0)
+                let files  = this.text.split('\n').filter(p => p.trim().length > 0)
                 let parsed = []
                 for (let i = 0; i < files.length; i++) {
-                    let path = files[i]
-                    let name = path.substring(path.lastIndexOf('/') + 1)
-                    let ext  = name.substring(name.lastIndexOf('.') + 1).toLowerCase()
+                    let path  = files[i]
+                    let name  = path.substring(path.lastIndexOf('/') + 1)
+                    let ext   = name.substring(name.lastIndexOf('.') + 1).toLowerCase()
                     let video = root.videoExts.indexOf(ext) !== -1
                     let gif   = ext === "gif"
-                    parsed.push({ name: name, path: path, video: video, gif: gif })
+                    parsed.push({ name, path, video, gif })
                 }
                 parsed.sort((a, b) => a.name.localeCompare(b.name))
                 root.wallpapers = parsed
@@ -52,33 +49,12 @@ Singleton {
         }
     }
 
-    function refresh() {
-        finder.running = true
-    }
+    function refresh() { finder.running = true }
 
+    // ── Apply ─────────────────────────────────────────────────────────────
+    // Saves to Config so WallpaperWindow reacts and the path persists across restarts.
     function apply(path) {
-        if (isVideo(path)) {
-            _applyVideo(path)
-        } else {
-            _applyImage(path)
-        }
-    }
-
-    function _applyImage(path) {
-        let cmd = activeBackend === "mpvpaper"
-            ? "pkill -x mpvpaper; sleep 0.3; swww img '" + path + "' --transition-type grow --transition-pos 0.5,0.5 --transition-step 90"
-            : "swww img '" + path + "' --transition-type grow --transition-pos 0.5,0.5 --transition-step 90"
-        Quickshell.execDetached({ command: ["sh", "-c", cmd] })
-        activeBackend = "swww"
-    }
-
-    function _applyVideo(path) {
-        // Kill existing backend, then launch mpvpaper across all monitors
-        // no-audio and loop are passed as mpv options
-        let kill = activeBackend !== "" ? "pkill -x mpvpaper; pkill -x swww-daemon; sleep 0.3; " : ""
-        let cmd  = kill + "mpvpaper -o 'no-audio loop' '*' '" + path + "'"
-        Quickshell.execDetached({ command: ["sh", "-c", cmd] })
-        activeBackend = "mpvpaper"
+        Config.saveSetting("wallpaperPath", path)
     }
 
     Component.onCompleted: refresh()
