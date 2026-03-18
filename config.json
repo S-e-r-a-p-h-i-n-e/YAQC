@@ -1,6 +1,6 @@
 {
   "navbarLocation": "bottom",
-  "enableBorders": true,
+  "enableBorders": false,
   "transparentNavbar": false,
   "activeLayout": "09",
   "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"wallchange\",\"settings\",\"power\"]"
