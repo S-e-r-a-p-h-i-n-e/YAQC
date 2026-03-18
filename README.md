@@ -84,11 +84,13 @@ This allows the interface to behave more like a **composable system** than a fix
 
 | 📋 **TODO** | **STATUS** |
 | :---: | :---: |
+| Replace swww | ✅ |
+| Replace mpvpaper | ✅ |
 | Replace waybar | ✅ |
 | Replace rofi | ✅ |
 | Replace wlogout | ✅ |
 | Replace SwayNC | ✅ |
-| Port all necessary bash scripts into native QML modules/functionality | ⏳ |
+| Port all necessary bash scripts into native QML modules/functionality | ✅ |
 
 </div>
 
