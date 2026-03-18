@@ -85,9 +85,9 @@ This allows the interface to behave more like a **composable system** than a fix
 | 📋 **TODO** | **STATUS** |
 | :---: | :---: |
 | Replace waybar | ✅ |
-| Replace rofi | 🛠 |
-| Replace wlogout | 🛠 |
-| Replace SwayNC | 🛠 |
+| Replace rofi | ✅ |
+| Replace wlogout | ✅ |
+| Replace SwayNC | ✅ |
 | Port all necessary bash scripts into native QML modules/functionality | ⏳ |
 
 </div>

@@ -24,7 +24,7 @@ Singleton {
                 for (let i = 0; i < lines.length; i++) {
                     let parts = lines[i].split('\t')
                     if (parts.length >= 2) {
-                        parsed.push({ id: parts[0], content: parts.slice(1).join('\t') })
+                        parsed.push({ id: lines[i], content: parts.slice(1).join('\t') })
                     }
                 }
                 root.history = parsed
