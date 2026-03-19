@@ -15,6 +15,14 @@ Instead of hardcoding UI structure in QML, YAQC treats the shell more like a **r
 
 ---
 
+## 📷 Showcase
+
+![Video](Showcase/2026-03-19_13-44-03.mp4)
+![Screenshot](Showcase/Default%20+%20Borders.png)
+![Screenshot](Showcase/Default%20+%20Transparent.png)
+
+---
+
 ## 📜 Philosophy
 
 YAQC follows a few key ideas:
@@ -119,6 +127,43 @@ A full explanation of how these parts interact is documented in:
 
 ---
 
+## 📦 Requirements
+
+### Required
+
+| Dependency | Purpose |
+|---|---|
+| [Quickshell](https://quickshell.outfoxxed.me) | Shell framework — the only hard requirement |
+| [Hyprland](https://hyprland.org) | Compositor — workspaces, window tracking, active toplevel detection |
+| A [Nerd Font](https://www.nerdfonts.com) | All icons are nerd font glyphs — JetBrainsMono Nerd Font is the default |
+| `pactl` | Audio volume and mute control (part of `pipewire-pulse` or `pulseaudio`) |
+| `nmcli` + `iwgetid` | Network status (part of `networkmanager` + `wireless_tools`) |
+| `bluetoothctl` | Bluetooth state and toggle (part of `bluez-utils`) |
+| `cliphist` | Clipboard history backend |
+| `wl-copy` | Clipboard write (part of `wl-clipboard`) |
+| `checkupdates` | Pending update count (part of `pacman-contrib`, Arch only) |
+
+### Optional
+
+| Dependency | Purpose | Falls back to |
+|---|---|---|
+| `cava` | Audio visualizer bar module | Module hidden if not installed |
+| `kitty` | Terminal for the updates module (`topgrade`) | Updates module won't open a terminal |
+| `topgrade` | System updater launched from the updates module | Updates module shows count only |
+| `pavucontrol` | Audio settings opened from the audio module | Right-click does nothing |
+| `blueman-manager` | Bluetooth settings opened from the bluetooth module | Right-click does nothing |
+| `nm-connection-editor` | Network settings opened from the network module | Right-click does nothing |
+| `nmgui` | Wi-Fi settings opened from the dashboard Wi-Fi | Right-click does nothing |
+| `nvidia-smi` / `sensors` | GPU temperature in the systeminfo module | Temperature shows as unavailable |
+| `hyprlock` / `swaylock` | Screen lock in the power menu | Falls back to `loginctl lock-session` |
+| `swayidle` | Idle inhibitor module support | Module still works, idle daemon optional |
+
+### Wallpaper
+
+YAQC includes a native wallpaper system — no `swww` or `mpvpaper` needed. Place wallpapers in `~/.config/quickshell/wallpapers/`. Supported formats: `jpg`, `jpeg`, `png`, `webp`, `gif`, `mp4`, `webm`, `mkv`, `mov`, `avi`.
+
+---
+
 ## ⚙️ Configuration
  
 Both config files live-reload via `FileView` — changes take effect immediately without restarting.
@@ -177,7 +222,7 @@ This includes:
 
 YAQC began as a fork but has since diverged significantly in structure and design.
 
-The project now serves as an exploration of how a **Quickshell configuration can be structured as a modular UI system** rather than a single static layout.
+The project now serves as an exploration of how a **Quickshell configuration can be structured as a modular UI system** rather than a single static layout. Safe to say that this is its stable stage with modifications and new features appearing here and there while I work on [SeraDOTS](https://github.com/S-e-r-a-p-h-i-n-e/SeraDOTS)
 
 ---
 

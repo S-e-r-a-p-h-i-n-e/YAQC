@@ -59,12 +59,11 @@ Item {
                     radius: height / 2
                     color:  emptyWsArea.containsMouse
                         ? Colors.foreground
-                        : (wsDelegate.modelData.focused ? Colors.color3 : Colors.color7)
+                        : (wsDelegate.modelData.focused ? Colors.color0 : Colors.color7)
                     Behavior on color { ColorAnimation { duration: 150 } }
 
                     Text {
                         anchors.centerIn: parent
-                        anchors.horizontalCenterOffset: 1
                         text:           wsDelegate.modelData.focused ? "󰣇" : wsDelegate.modelData.name
                         color:          emptyWsArea.containsMouse
                             ? Colors.background
@@ -147,8 +146,6 @@ Item {
 
                             Text {
                                 anchors.centerIn: parent
-                                anchors.horizontalCenterOffset: 0.25
-                                anchors.verticalCenterOffset:   1
                                 text:           Workspaces.iconFor(appDot.modelData)
                                 color:          appArea.containsMouse
                                     ? Colors.background

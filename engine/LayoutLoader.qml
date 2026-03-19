@@ -36,7 +36,7 @@ Scope {
             required property var modelData
 
             screen:        modelData
-            color:         Config.transparentNavbar ? "transparent" : Colors.background
+            color:         Config.transparentNavbar ? "transparent" : Qt.rgba(Colors.background.r, Colors.background.g, Colors.background.b, 1.0)
             Behavior on color { ColorAnimation { duration: Animations.normal; easing.type: Animations.easeInOut } }
             exclusionMode: ExclusionMode.Auto
 

@@ -1,8 +1,8 @@
 {
-  "navbarLocation": "bottom",
-  "enableBorders": false,
-  "transparentNavbar": true,
+  "navbarLocation": "top",
+  "enableBorders": true,
+  "transparentNavbar": false,
   "activeLayout": "09",
-  "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"wallchange\",\"settings\",\"power\"]",
-  "wallpaperPath": "/home/amelie/.config/quickshell/wallpapers/Délivrance ｜｜ Emotional Instrumental Music ｜｜ S7ven Dark Ambience ｜｜ @amavaarts [9ICX4J189Gw].webm"
+  "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"settings\",\"wallchange\",\"power\"]",
+  "wallpaperPath": "/home/amelie/.config/quickshell/wallpapers/Moon Goddess [Wallpaper Engine 4K].webm"
 }
