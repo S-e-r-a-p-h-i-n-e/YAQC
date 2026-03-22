@@ -175,27 +175,28 @@ Custom views own their visual logic entirely. They don't depend on shared compon
 
 ### Module inventory
 
-| Module          | Type      | View | Description                                      |
-|-----------------|-----------|------|--------------------------------------------------|
-| `audio`         | dynamic   | —    | Speaker + mic volume/mute via pactl polling      |
-| `bluetooth`     | dynamic   | —    | Bluetooth power + connection state               |
-| `cava`          | custom    | ✓    | Audio visualizer bar (requires cava binary)      |
-| `cliphist`      | static    | —    | Bar button — opens ClipManager panel via IPC     |
-| `clock`         | custom    | ✓    | Time and date display                            |
-| `idleinhibitor` | static    | —    | Prevents idle/sleep while active                 |
-| `layoutswitcher`| —         | —    | Stub — functionality absorbed into Settings panel|
-| `media`         | custom    | ✓    | MPRIS media player controls                      |
-| `network`       | dynamic   | —    | WiFi/ethernet state via nmcli polling            |
-| `notifications` | static    | —    | Notification count — opens Dashboard via IPC     |
-| `power`         | static    | —    | Opens PowerManager panel via IPC                 |
-| `settings`      | static    | —    | Opens Settings panel via IPC                     |
-| `start`         | static    | —    | Opens Launcher panel via IPC                     |
-| `status`        | dynamic   | —    | Battery percentage + backlight brightness        |
-| `systeminfo`    | dynamic   | —    | CPU %, RAM %, GPU temp                           |
-| `tray`          | custom    | ✓    | System tray icons via Quickshell SystemTray API  |
-| `updates`       | dynamic   | —    | Pending update count via checkupdates            |
-| `wallchange`    | static    | —    | Opens Wallpaper picker panel via IPC             |
-| `workspaces`    | custom    | ✓    | Hyprland workspace dots with app icons           |
+| Module          | Type      | View | Description                                            |
+|-----------------|-----------|------|--------------------------------------------------------|
+| `audio`         | dynamic   | —    | Speaker + mic volume/mute via pactl polling            |
+| `bluetooth`     | dynamic   | —    | Bluetooth power + connection state                     |
+| `cava`          | custom    | ✓    | Audio visualizer bar (requires cava binary)            |
+| `cliphist`      | static    | —    | Bar button — opens ClipManager panel via IPC           |
+| `clock`         | custom    | ✓    | Time and date display                                  |
+| `idleinhibitor` | static    | —    | Prevents idle/sleep while active                       |
+| `layoutswitcher`| —         | —    | Stub — functionality absorbed into Settings panel      |
+| `media`         | custom    | ✓    | MPRIS media player controls                            |
+| `network`       | dynamic   | —    | WiFi/ethernet state via nmcli polling                  |
+| `notifications` | static    | —    | Notification count — opens Dashboard via IPC           |
+| `power`         | static    | —    | Opens PowerManager panel via IPC                       |
+| `settings`      | static    | —    | Opens Settings panel via IPC                           |
+| `start`         | static    | —    | Opens Launcher panel via IPC                           |
+| `status`        | dynamic   | —    | Battery percentage + backlight brightness              |
+| `systeminfo`    | dynamic   | —    | CPU %, RAM %, GPU temp                                 |
+| `tray`          | custom    | ✓   | System tray icons via Quickshell SystemTray API         |
+| `updates`       | dynamic   | —    | Pending update count via checkupdates                  |
+| `wallchange`    | static    | —    | Opens Wallpaper picker panel via IPC                   |
+| `workspaces`    | custom    | ✓   | Hyprland workspace dots with app icons                 |
+| `taskbar`       | custom    | ✓   | Running windows + pinned apps via wlr-foreign-toplevel |
 
 ---
 
@@ -285,3 +286,12 @@ The wallpaper system is split across two engine files. `WallpaperEngine` handles
 ### Custom views own their visuals
 
 When a module needs a custom view, it owns its visual logic completely and doesn't depend on shared chip components. `DynamicChip` and `StaticChip` stay as engine primitives and don't leak into module internals.
+
+### Taskbar as compositor-agnostic module
+
+The taskbar module uses `ToplevelManager` from `Quickshell.Wayland` rather than 
+Hyprland-specific IPC, making it functional on any wlroots-based compositor that 
+supports the `zwlr-foreign-toplevel-management-v1` protocol. Pinned app state is 
+persisted to `pinned_apps.json` via `FileView`. This is the only module that writes 
+its own state file outside of `config.json` and `style.json`, justified because 
+pinned apps are user data rather than configuration.
