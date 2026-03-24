@@ -1,6 +1,10 @@
 {
   "left": [
+  ],
+  "center": [
     [
+      "start",
+      "workspaces",
       "cpu"
     ],
     [
@@ -8,17 +12,9 @@
       "clock"
     ],
     [
-      "start",
-      "taskbar"
-    ]
-  ],
-  "center": [
-  ],
-  "right": [
-    [
       "audio",
-      "network",
-      "updates"
+      "updates",
+      "network"
     ],
     [
       "tray",
@@ -27,5 +23,7 @@
       "settings",
       "power"
     ]
+  ],
+  "right": [
   ]
 }

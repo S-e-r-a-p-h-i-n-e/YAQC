@@ -5,13 +5,19 @@
   "center": [
     [
       "cpu",
-      "network",
+      "network"
+    ],
+    [
       "idleinhibitor",
       "start",
-      "taskbar",
-      "clock",
+      "workspaces",
+      "clock"
+    ],
+    [
       "audio",
-      "updates",
+      "updates"
+    ],
+    [
       "tray",
       "wallchange",
       "cliphist",

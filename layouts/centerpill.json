@@ -1,29 +1,25 @@
 {
   "left": [
+    
   ],
   "center": [
     [
       "cpu",
+      "network",
+      "workspaces",
       "start",
-      "taskbar"
-    ],
-    [
+      "clock",
       "idleinhibitor",
-      "clock"
-    ],
-    [
-      "audio",
-      "updates",
-      "network"
-    ],
-    [
       "tray",
       "wallchange",
       "cliphist",
       "settings",
-      "power"
+      "power",
+      "audio",
+      "updates"
     ]
   ],
   "right": [
+
   ]
 }

@@ -1,17 +1,30 @@
 {
   "left": [
-    "start",
-    "taskbar"
+    [
+      "start",
+      "workspaces"
+    ],
+    [
+      "media"
+    ]
   ],
   "center": [
-    
+    [
+      "idleinhibitor",
+      "clock"
+    ]
   ],
   "right": [
-    "media",
-    "tray",
-    "notifications",
-    "settings",
-    "power",
-    "clock"
+    [
+      "audio",
+      "network"
+    ],
+    [
+      "tray",
+      "wallchange",
+      "cliphist",
+      "settings",
+      "power"
+    ]
   ]
 }

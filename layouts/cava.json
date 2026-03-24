@@ -2,15 +2,14 @@
   "left": [
     [
       "start",
-      "taskbar"
+      "workspaces"
     ]
   ],
   "center": [
     [
       "cava",
       "idleinhibitor",
-      "clock",
-      "media"
+      "clock"
     ]
   ],
   "right": [

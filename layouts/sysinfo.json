@@ -1,20 +1,23 @@
 {
   "left": [
-    
+    [
+      "start",
+      "workspaces"
+    ],
+    [
+      "cpu"
+    ]
   ],
   "center": [
     [
-      "cpu",
-      "network"
-    ],
-    [
       "idleinhibitor",
-      "start",
-      "taskbar",
       "clock"
-    ],
+    ]
+  ],
+  "right": [
     [
       "audio",
+      "network",
       "updates"
     ],
     [
@@ -24,8 +27,5 @@
       "settings",
       "power"
     ]
-  ],
-  "right": [
-
   ]
 }

@@ -2,22 +2,21 @@
   "left": [
     [
       "start",
-      "taskbar"
-    ],
-    [
-      "media",
-      "clock",
-      "idleinhibitor"
+      "workspaces"
     ]
   ],
   "center": [
+    [
+      "cava",
+      "idleinhibitor",
+      "clock",
+      "media"
+    ]
   ],
   "right": [
     [
       "audio",
-      "network"
-    ],
-    [
+      "updates",
       "tray",
       "cliphist",
       "wallchange",
