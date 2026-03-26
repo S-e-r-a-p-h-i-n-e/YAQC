@@ -1,8 +1,8 @@
 {
   "navbarLocation": "top",
-  "enableBorders": false,
+  "enableBorders": true,
   "transparentNavbar": false,
-  "activeLayout": "default",
+  "activeLayout": "cava",
   "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"settings\",\"wallchange\",\"power\"]",
   "wallpaperPath": "/home/amelie/.config/quickshell/wallpapers/Guardian ｜｜ Epic Orchestral Cinematic Music ｜｜ Vocals ｜｜ S7ven ｜｜ @amavaarts.mp4"
 }

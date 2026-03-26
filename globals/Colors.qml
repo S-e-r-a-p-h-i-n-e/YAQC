@@ -38,7 +38,7 @@ Singleton {
 
       property JsonObject special: JsonObject {
         // #CC is ~80% opacity. 1E1E2E is a neutral, deep slate.
-        property color background: "#CC1E1E2E" 
+        property color background: "#1E1E2E" 
         property color foreground: "#CAD3F5"
         property color cursor: "#F4DBD6"
       }
