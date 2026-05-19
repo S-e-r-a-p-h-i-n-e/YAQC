@@ -6,7 +6,6 @@ import QtQuick
 import QtMultimedia
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Hyprland
 import qs.globals
 
 Scope {
@@ -36,26 +35,6 @@ Scope {
                 ? rawPath.replace("~", Quickshell.env("HOME"))
                 : rawPath
             readonly property bool isVideo: rawPath.match(/\.(mp4|webm|mkv|mov|avi)$/i) !== null
-
-            // ── Smart video pausing ───────────────────────────────────────
-            // Pause video when any window is focused, play when desktop is empty.
-            property bool noWindowFocused: !Hyprland.activeToplevel
-
-            readonly property bool shouldPlayVideo: isVideo && noWindowFocused
-
-            onShouldPlayVideoChanged: {
-                if (!isVideo) return
-                if (player.playbackState !== MediaPlayer.StoppedState)
-                    shouldPlayVideo ? player.play() : player.pause()
-            }
-
-            Connections {
-                target: Hyprland
-                ignoreUnknownSignals: true
-                function onActiveToplevelChanged() {
-                    win.noWindowFocused = !Hyprland.activeToplevel
-                }
-            }
 
             // ── Crossfade: two image layers, alternating ──────────────────
             property string path1:    ""

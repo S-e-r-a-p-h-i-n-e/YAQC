@@ -10,7 +10,7 @@ Item {
     property bool inPill:       false
 
     readonly property real dotSize:     barThickness
-    readonly property real iconSize:    dotSize * 0.75
+    readonly property real iconSize:    dotSize * 0.6
     readonly property real itemSpacing: Style.slotSpacing
 
     implicitWidth: isHorizontal

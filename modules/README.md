@@ -59,7 +59,6 @@ Modules declare their type via `moduleType`, which tells `ModuleRegistry` which 
 | `tray`          | custom  | ✓    | —                       | System tray icons (native Quickshell API)       |
 | `updates`       | dynamic | —    | checkupdates, kitty     | Pending Arch update count                       |
 | `wallchange`    | static  | —    | —                       | Opens Wallpaper picker panel                    |
-| `workspaces`    | custom  | ✓    | —                       | Hyprland workspace dots with app icons          |
 
 ## Adding a new module
 

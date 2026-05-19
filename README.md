@@ -132,7 +132,6 @@ A full explanation of how these parts interact is documented in:
 | Dependency | Purpose |
 |---|---|
 | [Quickshell](https://quickshell.outfoxxed.me) | Shell framework — the only hard requirement |
-| [Hyprland](https://hyprland.org) | Compositor — workspaces, window tracking, active toplevel detection |
 | A [Nerd Font](https://www.nerdfonts.com) | All icons are nerd font glyphs — JetBrainsMono Nerd Font is the default |
 | `pactl` | Audio volume and mute control (part of `pipewire-pulse` or `pulseaudio`) |
 | `nmcli` + `iwgetid` | Network status (part of `networkmanager` + `wireless_tools`) |
@@ -147,7 +146,7 @@ A full explanation of how these parts interact is documented in:
 |---|---|---|
 | `cava` | Audio visualizer bar module | Module hidden if not installed |
 | `kitty` | Terminal for the updates module (`topgrade`) | Updates module won't open a terminal |
-| `topgrade` | System updater launched from the updates module | Updates module shows count only |
+| `topgrade` | System updater launched from the updates module | Updates module shows count onl4y |
 | `pavucontrol` | Audio settings opened from the audio module | Right-click does nothing |
 | `blueman-manager` | Bluetooth settings opened from the bluetooth module | Right-click does nothing |
 | `nm-connection-editor` | Network settings opened from the network module | Right-click does nothing |
@@ -155,6 +154,7 @@ A full explanation of how these parts interact is documented in:
 | `nvidia-smi` / `sensors` | GPU temperature in the systeminfo module | Temperature shows as unavailable |
 | `hyprlock` / `swaylock` | Screen lock in the power menu | Falls back to `loginctl lock-session` |
 | `swayidle` | Idle inhibitor module support | Module still works, idle daemon optional |
+| `imagemagick` | Wallpaper Based Quickshell Theme | Settings Option to Base Theme on Wallpaper disabled |
 
 ### Wallpaper
 
@@ -166,7 +166,7 @@ YAQC includes a native wallpaper system — no `swww` or `mpvpaper` needed. Plac
  
 Both config files live-reload via `FileView` — changes take effect immediately without restarting.
 
-There are five panels available for you to call as a command or set as a keybinds in hyprland. 
+There are five panels available for you to call as a command or set as a keybinds in the compositor of your choice. 
 
 | Panel                    | Commands                     |
 |--------------------------|------------------------------|
