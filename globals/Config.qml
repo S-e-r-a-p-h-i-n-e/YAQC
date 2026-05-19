@@ -14,6 +14,7 @@ Singleton {
     property string navbarLocation:    "top"
     property bool   enableBorders:     true
     property bool   transparentNavbar: false
+    property bool   wallpaperTheme:    false
     property string activeLayout:      "default"
     property string dashboardLayout:   JSON.stringify(["stats","speaker","mic","network","idleinhibitor","media"])
     property string wallpaperPath:     ""
@@ -34,6 +35,7 @@ Singleton {
             property string navbarLocation:    "top"
             property bool   enableBorders:     true
             property bool   transparentNavbar: false
+            property bool   wallpaperTheme:    false
             property string activeLayout:      "default"
             property string dashboardLayout:   ""
             property string wallpaperPath:     ""
@@ -44,6 +46,7 @@ Singleton {
             }
             onEnableBordersChanged:     root.enableBorders     = enableBorders
             onTransparentNavbarChanged: root.transparentNavbar = transparentNavbar
+            onWallpaperThemeChanged:    root.wallpaperTheme    = wallpaperTheme
             onActiveLayoutChanged:      root.activeLayout      = activeLayout
             onDashboardLayoutChanged:   { if (dashboardLayout !== "") root.dashboardLayout = dashboardLayout }
             onWallpaperPathChanged:     { if (wallpaperPath   !== "") root.wallpaperPath   = wallpaperPath   }
@@ -61,7 +64,7 @@ Singleton {
         onTriggered: root.loaded = true
     }
 
-    readonly property var settingKeys: ["navbarLocation", "enableBorders", "transparentNavbar", "activeLayout", "dashboardLayout", "wallpaperPath"]
+    readonly property var settingKeys: ["navbarLocation", "enableBorders", "transparentNavbar", "activeLayout", "dashboardLayout", "wallpaperPath", "wallpaperTheme"]
 
     function saveSetting(key, value) {
         root[key] = value

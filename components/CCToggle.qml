@@ -23,7 +23,7 @@ Item {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             text:           label
-            color:          Colors.color8
+            color:          Colors.foreground
             font.family:    Style.barFont
             font.pixelSize: 9
             font.weight:    Font.Bold

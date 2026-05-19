@@ -25,7 +25,6 @@ QtObject {
         { id: "updates",       label: "Updates",    icon: "󰚰",  cols: 2, rows: 1 },
         { id: "speaker",       label: "Speaker",    icon: "󰕾",  cols: 1, rows: 2 },
         { id: "mic",           label: "Mic",        icon: "󰍬",  cols: 1, rows: 2 },
-        { id: "brightness",    label: "Brightness", icon: "",   cols: 1, rows: 2 },
         { id: "network",       label: "Wi-Fi",      icon: "󰤨",  cols: 1, rows: 1 },
         { id: "bluetooth",     label: "Bluetooth",  icon: "󰂱",  cols: 1, rows: 1 },
         { id: "idleinhibitor", label: "Sleep",      icon: "󰾪",  cols: 1, rows: 1 },

@@ -33,7 +33,7 @@ QtObject {
         // Dynamic
         "audio":         audioDynamic,
         "network":       networkDynamic,
-        "status":        statusDynamic,  "battery":  statusDynamic,  "backlight": statusDynamic,
+        "status":        statusDynamic,  "battery": statusDynamic,
         "systeminfo":    sysinfoDynamic, "cpu":      sysinfoDynamic, "memory":    sysinfoDynamic,
         "updates":       updatesDynamic,
         // Static
@@ -65,7 +65,6 @@ QtObject {
         "updates":       updatesWidget,
         "speaker":       speakerWidget,
         "mic":           micWidget,
-        "brightness":    brightnessWidget,
         "network":       networkWidget,
         "bluetooth":     bluetoothWidget,
         "idleinhibitor": idleWidget,
@@ -113,7 +112,7 @@ QtObject {
                 Column { anchors.centerIn: parent; spacing: 4
                     Text { anchors.horizontalCenter: parent.horizontalCenter; text: "󰍛"; color: Colors.color7; font.family: Style.barFont; font.pixelSize: 18 }
                     Text { anchors.horizontalCenter: parent.horizontalCenter; text: SystemInfo.cpuPercent + "%"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 12; font.weight: Font.Bold }
-                    Text { anchors.horizontalCenter: parent.horizontalCenter; text: "CPU"; color: Colors.color8; font.family: Style.barFont; font.pixelSize: 9 }
+                    Text { anchors.horizontalCenter: parent.horizontalCenter; text: "CPU"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 9 }
                 }
             }
             Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.2 }
@@ -122,7 +121,7 @@ QtObject {
                 Column { anchors.centerIn: parent; spacing: 4
                     Text { anchors.horizontalCenter: parent.horizontalCenter; text: "󰾆"; color: Colors.color7; font.family: Style.barFont; font.pixelSize: 18 }
                     Text { anchors.horizontalCenter: parent.horizontalCenter; text: SystemInfo.memPercent + "%"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 12; font.weight: Font.Bold }
-                    Text { anchors.horizontalCenter: parent.horizontalCenter; text: "RAM"; color: Colors.color8; font.family: Style.barFont; font.pixelSize: 9 }
+                    Text { anchors.horizontalCenter: parent.horizontalCenter; text: "RAM"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 9 }
                 }
             }
         }
@@ -146,7 +145,7 @@ QtObject {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 4
                 Text { width: parent.width; text: Updates.hasUpdates ? Updates.updateCount + " updates" : "Up to date"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 13; font.weight: Font.Bold; elide: Text.ElideRight }
-                Text { width: parent.width; text: Updates.hasUpdates ? "Tap to update" : "Packages at Latest"; color: Colors.color8; font.family: Style.barFont; font.pixelSize: 10; elide: Text.ElideRight }
+                Text { width: parent.width; text: Updates.hasUpdates ? "Tap to update" : "Packages at Latest"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 10; elide: Text.ElideRight }
             }
             MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; enabled: Updates.hasUpdates; onClicked: Updates.update() }
         }
@@ -196,29 +195,6 @@ QtObject {
                 anchors.fill: parent; acceptedButtons: Qt.LeftButton | Qt.RightButton; cursorShape: Qt.PointingHandCursor; preventStealing: true
                 onClicked: (e) => { if (e.button === Qt.RightButton) Audio.muteSrc() }
                 onMouseYChanged: { if (pressed) Audio.setSrcVolume(Math.round(Math.max(0, Math.min(1, 1 - mouseY / (height - 12))) * 100)) }
-            }
-        }
-    }
-
-    // ── Dashboard: Brightness ─────────────────────────────────────────────
-    property Component brightnessWidget: Component {
-        Rectangle {
-            color: "transparent"; radius: 12; clip: true; visible: Status.hasBacklight
-            Rectangle {
-                anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
-                height: Math.min(parent.height, parent.height * Math.max(0, Math.min(1, Status.blPercent / 100)) + radius)
-                radius: 12; color: Colors.color7; opacity: 0.5
-                Behavior on height { NumberAnimation { duration: 80 } }
-            }
-            Column {
-                anchors.bottom: parent.bottom; anchors.horizontalCenter: parent.horizontalCenter; anchors.bottomMargin: 12
-                spacing: 4
-                Text { anchors.horizontalCenter: parent.horizontalCenter; text: Status.blPercent + "%"; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 11; font.weight: Font.Bold }
-                Text { anchors.horizontalCenter: parent.horizontalCenter; text: Status.blIcon; color: Colors.foreground; font.family: Style.barFont; font.pixelSize: 20 }
-            }
-            MouseArea {
-                anchors.fill: parent; cursorShape: Qt.PointingHandCursor; preventStealing: true
-                onMouseYChanged: { if (pressed) Status.setBacklight(Math.round(Math.max(0, Math.min(1, 1 - mouseY / (height - 12))) * Status.blMax)) }
             }
         }
     }

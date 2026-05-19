@@ -5,14 +5,16 @@ import qs.globals
 Item {
     id: root
 
-    property string labelText: "Setting"
-    property bool   checked:   true
-    property bool   disabled:  false
+    property string labelText:      "Setting"
+    property bool   checked:        true
+    property bool   disabled:       false
+    property string disabledReason: ""   // shown below the toggle when disabled and non-empty
 
     signal toggled(bool newState)
 
     implicitWidth:  parent ? parent.width : 200
-    implicitHeight: 30
+    implicitHeight: root.disabled && root.disabledReason !== "" ? 46 : 30
+    Behavior on implicitHeight { NumberAnimation { duration: 150 } }
 
     opacity: root.disabled ? 0.35 : 1.0
     Behavior on opacity { NumberAnimation { duration: 150 } }
@@ -25,6 +27,17 @@ Item {
         font.family:             "JetBrainsMono Nerd Font"
         font.pixelSize:          14
         font.weight:             Font.Bold
+    }
+
+    Text {
+        anchors.left:    parent.left
+        anchors.bottom:  parent.bottom
+        text:            root.disabledReason
+        color:           Colors.color1
+        font.family:     "JetBrainsMono Nerd Font"
+        font.pixelSize:  11
+        visible:         root.disabled && root.disabledReason !== ""
+        opacity:         0.85
     }
 
     Rectangle {

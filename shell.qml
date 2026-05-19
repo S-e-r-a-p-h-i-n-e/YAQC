@@ -229,6 +229,11 @@ Scope {
         function onToggleTransparentNavbar(state) {
             Config.saveSetting("transparentNavbar", state)
         }
+        function onToggleTheme(state) {
+            Config.saveSetting("wallpaperTheme", state)
+            if (state && Config.wallpaperPath !== "")
+                PaletteEngine.generate(Config.wallpaperPath)
+        }
         function onChangeLayout(layoutName) {
             Config.saveSetting("activeLayout", layoutName)
         }

@@ -4,6 +4,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.globals
 
 Singleton {
   id: root
@@ -31,8 +32,15 @@ Singleton {
   readonly property color color14: themeAdapter.colors.color14
   readonly property color color15: themeAdapter.colors.color15
 
+  readonly property string paletteColorsPath:    Quickshell.env("HOME") + "/.cache/quickshell/palette.json"
+  readonly property string catppuccinColorsPath: Quickshell.env("HOME") + "/.config/quickshell/catppuccin.json"
+
+  function reload() { themeFile.reload() }
+
   FileView {
     id: themeFile
+    // Swap between the two files — never set to "" since that doesn't reset the adapter
+    path: Config.wallpaperTheme ? root.paletteColorsPath : root.catppuccinColorsPath
     adapter: JsonAdapter {
       id: themeAdapter
 

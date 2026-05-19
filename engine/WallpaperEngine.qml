@@ -53,8 +53,11 @@ Singleton {
 
     // ── Apply ─────────────────────────────────────────────────────────────
     // Saves to Config so WallpaperWindow reacts and the path persists across restarts.
+    // If wallpaperTheme is on, also runs wallust to regenerate the color palette.
     function apply(path) {
         Config.saveSetting("wallpaperPath", path)
+        if (Config.wallpaperTheme)
+            PaletteEngine.generate(path)
     }
 
     Component.onCompleted: refresh()

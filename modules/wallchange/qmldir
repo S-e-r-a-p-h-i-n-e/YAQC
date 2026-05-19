@@ -1,2 +1,2 @@
-module qs.modules.wallchange
+module qs.modules.taskbar
 singleton WallChange 1.0 WallChange.qml

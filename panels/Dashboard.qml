@@ -28,7 +28,7 @@ Panel {
             contentItem: Rectangle { implicitWidth: 4; radius: 2; color: Colors.color7; opacity: 0.4 }
         }
         ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
-        
+
         contentWidth: width
         contentHeight: mainCol.height // FIX: Explicitly bind the scroll boundary to the column!
 
@@ -37,7 +37,7 @@ Panel {
             width:      scroll.width
             spacing:    14
             topPadding: 4
-            
+
             // ── Header ────────────────────────────────────────────────────
             Item {
                 width:  parent.width
@@ -259,7 +259,7 @@ Panel {
                                 Component.onCompleted: Qt.callLater(marquee.restart)
                             }
                             Text { width: parent.width; text: Media.artist; color: Colors.color7; font.family: Style.barFont; font.pixelSize: 11; elide: Text.ElideRight }
-                            Text { width: parent.width; visible: Media.album !== ""; text: Media.album; color: Colors.color8; font.family: Style.barFont; font.pixelSize: 10; elide: Text.ElideRight }
+                            Text { width: parent.width; visible: Media.album !== ""; text: Media.album; color: Colors.color7; font.family: Style.barFont; font.pixelSize: 10; elide: Text.ElideRight }
                         }
                     }
 
@@ -484,10 +484,10 @@ Panel {
                 }
                 Text {
                     visible: Notifications.count === 0
-                    
+
                     // FIX: Center using X math instead of anchors to avoid breaking the Column positioner
-                    x: (parent.width - width) / 2 
-                    
+                    x: (parent.width - width) / 2
+
                     text: "No notifications"; color: Colors.color8; font.family: Style.barFont; font.pixelSize: 12; opacity: 0.5
                 }
             }

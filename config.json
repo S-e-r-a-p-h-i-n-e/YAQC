@@ -2,7 +2,8 @@
   "navbarLocation": "top",
   "enableBorders": true,
   "transparentNavbar": false,
-  "activeLayout": "cava",
+  "activeLayout": "default",
   "dashboardLayout": "[\"stats\",\"updates\",\"speaker\",\"network\",\"bluetooth\",\"idleinhibitor\",\"settings\",\"wallchange\",\"power\"]",
-  "wallpaperPath": "/home/amelie/.config/quickshell/wallpapers/Guardian ｜｜ Epic Orchestral Cinematic Music ｜｜ Vocals ｜｜ S7ven ｜｜ @amavaarts.mp4"
+  "wallpaperPath": "~/.config/quickshell/wallpapers/mountain_sunset.jpg",
+  "wallpaperTheme": false
 }

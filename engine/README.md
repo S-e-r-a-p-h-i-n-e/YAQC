@@ -15,6 +15,7 @@ The machinery that constructs the bar, drives the dashboard, and manages wallpap
 | `ClipboardEngine.qml` | singleton | Manages clipboard history via cliphist and favorites via a flat text file. Powers the ClipManager panel |
 | `WallpaperEngine.qml` | singleton | File discovery for the wallpaper picker. `apply(path)` saves to `Config.wallpaperPath` which `WallpaperWindow` reacts to |
 | `WallpaperWindow.qml` | component | Self-contained background renderer. Spawns one `PanelWindow` at `WlrLayer.Background` per screen internally. Crossfade, parallax, smart video pause |
+| `PaletteEngine.qml` | singleton | Generates a palette from the wallpaper and saves the palette as a json in cache |
 
 ## Adding a new engine subsystem
 

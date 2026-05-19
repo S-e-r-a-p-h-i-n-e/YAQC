@@ -40,7 +40,9 @@ Item {
             ? (root.item.activeColor ?? Colors.color7)
             : (root.item.bgColor ?? Colors.color7)
 
-        color: resolvedBg
+        color: mouseArea.containsMouse
+            ? Qt.lighter(resolvedBg, 1.2)
+            : resolvedBg
         Behavior on color { ColorAnimation { duration: 150 } }
 
         Text {
@@ -54,8 +56,10 @@ Item {
         }
 
         MouseArea {
+            id:              mouseArea
             anchors.fill:    parent
             cursorShape:     Qt.PointingHandCursor
+            hoverEnabled:    true
             acceptedButtons: Qt.LeftButton | Qt.RightButton
             onClicked: (e) => {
                 if (e.button === Qt.RightButton) {

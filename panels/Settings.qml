@@ -5,12 +5,14 @@ import QtQuick
 import QtQuick.Controls
 import qs.components
 import qs.globals
+import qs.engine
 
 Panel {
     id: settingsPanel
 
     property var availableLayouts: []
     property bool bordersEnabled: Config.enableBorders
+    property bool themeEnabled: Config.wallpaperTheme
 
     Column {
         anchors.fill: parent
@@ -67,6 +69,13 @@ Panel {
                         checked:   Config.transparentNavbar
                         disabled:  settingsPanel.bordersEnabled
                         onToggled: (state) => EventBus.toggleTransparentNavbar(state)
+                    }
+                    Toggle {
+                        labelText: "Base Theme on Wallpaper"
+                        checked:        Config.wallpaperTheme
+                        disabled:       !PaletteEngine.available
+                        disabledReason: PaletteEngine.unavailableReason
+                        onToggled:      (state) => EventBus.toggleTheme(state)
                     }
                 }
 
@@ -129,9 +138,9 @@ Panel {
                             .sort((a, b) => a.localeCompare(b))
                             settingsPanel.availableLayouts = pinned.filter(p => names.includes(p)).concat(rest)
                         }
-                    }   
+                    }
                     Component.onCompleted: running = true
-                }           
+                }
 
                 Flow {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -170,6 +179,8 @@ Panel {
                 }
 
                 Rectangle { width: parent.width; height: 1; color: Colors.color8; opacity: 0.5 }
+
+
 
                 // ── Advanced Settings ─────────────────────────────────────
                 Rectangle {
