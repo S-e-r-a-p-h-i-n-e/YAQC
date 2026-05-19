@@ -69,7 +69,8 @@ The machinery that constructs the bar, drives the dashboard, and manages wallpap
 | `AppEngine.qml`        | Discovers installed applications by scanning `.desktop` files. Powers the Launcher panel |
 | `ClipboardEngine.qml`  | Manages clipboard history (via cliphist) and favorites (flat text file). Powers the ClipManager panel |
 | `WallpaperEngine.qml`  | File discovery for the wallpaper picker panel. `apply(path)` saves to `Config.wallpaperPath`, which `WallpaperWindow` reacts to |
-| `WallpaperWindow.qml`  | Self-contained background renderer. Spawns one `PanelWindow` at `WlrLayer.Background` per screen via internal `Variants`. Handles crossfade, parallax on empty desktop, and smart video pause via `QtMultimedia` |
+| `WallpaperWindow.qml`  | Self-contained background renderer. Spawns one `PanelWindow` at `WlrLayer.Background` per screen via internal `Variants`. Handles crossfade, parallax on empty desktop. |
+| `PaletteEngine.qml`    | Generates a Palette based on your wallpaper via `ImageMagick` for Quickshell to use. Note that this only applies to Quickshell and NOT the entire system |
 
 ### Navbar flow
 
@@ -195,7 +196,6 @@ Custom views own their visual logic entirely. They don't depend on shared compon
 | `tray`          | custom    | ✓   | System tray icons via Quickshell SystemTray API         |
 | `updates`       | dynamic   | —    | Pending update count via checkupdates                  |
 | `wallchange`    | static    | —    | Opens Wallpaper picker panel via IPC                   |
-| `workspaces`    | custom    | ✓   | Hyprland workspace dots with app icons                 |
 | `taskbar`       | custom    | ✓   | Running windows + pinned apps via wlr-foreign-toplevel |
 
 ---
@@ -235,17 +235,17 @@ Full overlay surfaces that appear on top of the bar. Each panel uses `Panel.qml`
 Two panels are always-on rather than toggled: `WallpaperWindow` (background layer) and `NotificationPopups` (toast overlay).
 
 | Panel               | Trigger          | Description                                                     |
-|---------------------|------------------|-----------------------------------------------------------------|
-| `Launcher`          | IPC / start module | App launcher with fuzzy search. Powered by `AppEngine`        |
-| `ClipManager`       | IPC / cliphist module | Clipboard history + favorites. Powered by `ClipboardEngine` |
-| `Wallpaper`         | IPC / wallchange module | Wallpaper file picker. Calls `WallpaperEngine.apply()`    |
-| `EmojiPicker`       | IPC only         | Emoji picker with category tabs and keyword search              |
-| `Dashboard`         | notifications module | Control center + media + notification list. Layout from `DashboardEngine` |
-| `Settings`          | settings module  | Bar configuration (location, layout, borders, transparency)     |
-| `AdvancedSettings`  | Settings panel   | Extended appearance configuration (spacing, sizing, radii)      |
-| `PowerManager`      | power module     | Full-screen power menu: lock, logout, suspend, reboot, shutdown |
-| `NotificationPopups`| always-on        | Live toast popup stack. Auto-dismisses per urgency/timeout      |
-| `NotificationCard`  | —                | Individual toast card component used by `NotificationPopups`    |
+|---------------------|------------------------------|---------------------------------------------------------------------------|
+| `Launcher`          | IPC / start module           | App launcher with fuzzy search. Powered by `AppEngine`                    |
+| `ClipManager`       | IPC / cliphist module        | Clipboard history + favorites. Powered by `ClipboardEngine`               |
+| `Wallpaper`         | IPC / wallchange module      | Wallpaper file picker. Calls `WallpaperEngine.apply()`                    |
+| `EmojiPicker`       | IPC only                     | Emoji picker with category tabs and keyword search                        |
+| `Dashboard`         | notifications / clock module | Control center + media + notification list. Layout from `DashboardEngine` |
+| `Settings`          | settings module              | Bar configuration (location, layout, borders, transparency)               |
+| `AdvancedSettings`  | Settings panel               | Extended appearance configuration (spacing, sizing, radii)                |
+| `PowerManager`      | power module                 | Full-screen power menu: lock, logout, suspend, reboot, shutdown           |
+| `NotificationPopups`| always-on                    | Live toast popup stack. Auto-dismisses per urgency/timeout                |
+| `NotificationCard`  | —                            | Individual toast card component used by `NotificationPopups`              |
 
 ### IPC handlers
 
